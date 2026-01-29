@@ -75,6 +75,10 @@ This repository provides skills for structured feature development:
 3. `/continue` - Resume existing feature work
 4. `/pr` - Create pull request
 
+### /design Command Behavior
+
+**CRITICAL:** When the `/design` skill is invoked, you MUST call the `EnterPlanMode` tool IMMEDIATELY before doing anything else. Do not ask questions, explore the codebase, or display guidance first. Call EnterPlanMode first, then proceed with the skill.
+
 ### .devflows/sessions/ Structure
 
 Feature documentation is stored in `.devflows/sessions/<branch_name>/`:

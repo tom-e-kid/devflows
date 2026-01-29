@@ -16,11 +16,18 @@ Start a new feature development session.
 
 ### 1. Enter Plan Mode
 
-Use the `EnterPlanMode` tool to enter plan mode.
+**CRITICAL: You MUST call the EnterPlanMode tool IMMEDIATELY before doing anything else.**
+
+Do NOT:
+- Ask questions first
+- Explore the codebase first
+- Display any guidance first
+
+Simply call `EnterPlanMode` now. The guidance will be displayed AFTER plan mode is active.
 
 ### 2. Display Guidance
 
-After entering plan mode, display:
+After plan mode is active, display:
 
 ```
 ## Plan Mode Started
