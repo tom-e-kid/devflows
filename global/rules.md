@@ -98,3 +98,9 @@ This directory is created by `/feature-setup` and deleted by `/feature-cleanup` 
 - Explain the reasoning behind suggestions
 - Respect existing project patterns
 
+## Technical Research
+
+- Always consult official documentation first
+- Use WebSearch/WebFetch to verify current behavior
+- Do not rely on training data for API specs or library usage
+
