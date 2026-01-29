@@ -10,14 +10,20 @@ devflows is a collection of reusable Claude Code skills and global rules for cro
 
 ```
 devflows/
+├── .claude-plugin/
+│   └── plugin.json     # Plugin manifest
 ├── CLAUDE.md           # This file (rules for devflows itself)
 ├── README.md           # User documentation
 │
 ├── global/
-│   └── rules.md        # Cross-project common rules
+│   └── rules.md        # Cross-project rules (injected via SessionStart hook)
+│
+├── hooks/
+│   ├── hooks.json      # Hook definitions
+│   └── session-start.sh
 │
 └── skills/             # Workflow skills
-    ├── plan/
+    ├── spec/
     ├── go/
     ├── continue/
     ├── pr/
@@ -30,11 +36,11 @@ devflows/
 
 ### Skill File Structure
 
-Each skill is a directory containing a markdown file:
+Each skill is a directory containing a SKILL.md file:
 
 ```
 skill-name/
-├── skill.md        # or SKILL.md
+├── SKILL.md        # Required (uppercase)
 └── scripts/        # Optional helper scripts
     └── helper.sh
 ```
@@ -65,10 +71,10 @@ description: Brief description shown in skill list
 
 ## Editing Global Rules
 
-### File Naming
+### How It Works
 
-- Use `rules.md` (not `CLAUDE.md`) to prevent auto-loading in this repo
-- Users symlink as `CLAUDE.md` at destination
+- `global/rules.md` is injected via SessionStart hook when plugin is enabled
+- No symlink needed - rules are automatically loaded on session start
 
 ### Content Guidelines
 
@@ -80,8 +86,8 @@ description: Brief description shown in skill list
 
 ### Manual Testing
 
-1. Create a test project
-2. Symlink the changed files
+1. Enable the plugin: `claude plugins:add /path/to/devflows`
+2. Open a test project
 3. Run relevant skills
 4. Verify behavior
 

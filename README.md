@@ -1,28 +1,32 @@
 # devflows
 
-Reusable development workflows for [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+A Claude Code plugin for structured feature development workflows.
 
 ## Overview
 
 devflows provides:
 
-- **Global CLAUDE.md** - Cross-project common rules
+- **Global Rules** - Cross-project common rules (auto-injected via SessionStart hook)
 - **Skills** - Structured feature development workflow
 
 ## Repository Structure
 
 ```
 devflows/
+├── .claude-plugin/
+│   └── plugin.json           # Plugin manifest
+├── hooks/
+│   ├── hooks.json            # Hook definitions
+│   └── session-start.sh      # Rules injection + session status
 ├── global/
-│   └── rules.md           # Cross-project common rules
-│
-└── skills/                # Workflow skills
-    ├── spec/              # Start planning
-    ├── go/                # Begin implementation
-    ├── continue/          # Resume work
-    ├── pr/                # Create PR
-    ├── ios-dev/           # iOS build configuration
-    ├── web-dev/           # Web build configuration
+│   └── rules.md              # Cross-project rules (auto-injected)
+└── skills/
+    ├── spec/SKILL.md         # Start planning
+    ├── go/SKILL.md           # Begin implementation
+    ├── continue/SKILL.md     # Resume work
+    ├── pr/SKILL.md           # Create PR
+    ├── ios-dev/SKILL.md      # iOS build configuration
+    ├── web-dev/SKILL.md      # Web build configuration
     └── ...
 ```
 
@@ -34,17 +38,14 @@ devflows/
 git clone https://github.com/tom-e-kid/devflows.git ~/devflows
 ```
 
-### 2. Set up global configuration
+### 2. Install as a plugin
 
 ```bash
-# Create ~/.claude if it doesn't exist
-mkdir -p ~/.claude
+# Global installation (all projects)
+/plugin install ~/devflows --scope user
 
-# Link global rules
-ln -s ~/devflows/global/rules.md ~/.claude/CLAUDE.md
-
-# Link skills
-ln -s ~/devflows/skills ~/.claude/skills
+# Or project-specific installation
+/plugin install ~/devflows --scope project
 ```
 
 ### 3. Project-specific configuration (optional)
@@ -67,20 +68,20 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        /spec                                     │
-│  Start planning - discuss requirements, explore codebase         │
+│                        /spec                                    │
+│  Start planning - discuss requirements, explore codebase        │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                         /go                                      │
-│  Approve plan - create branch, save docs, start implementation   │
+│                         /go                                     │
+│  Approve plan - create branch, save docs, start implementation  │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Implementation Loop                            │
-│  Implement → Simplify → Format → Build → Update Progress         │
+│                   Implementation Loop                           │
+│  Implement → Simplify → Format → Build → Update Progress        │
 └─────────────────────────────────────────────────────────────────┘
                               │
             ┌─────────────────┴─────────────────┐
@@ -138,15 +139,58 @@ During development, feature state is stored in `.devflows/sessions/<branch>/`:
 
 This directory is created by `/go` and deleted by `/feature-cleanup` after merge.
 
-## Configuration Layers
+## How It Works
+
+On session start, the plugin automatically:
+
+1. Injects `global/rules.md` as `<devflows-rules>`
+2. Detects current branch and session status
+3. Suggests `/continue` or `/spec` based on context
 
 ```
-~/.claude/CLAUDE.md          # Global rules (from global/rules.md)
-         ↓
-.claude/CLAUDE.md            # Project-specific rules
-         ↓
-.devflows/sessions/<branch>/      # Feature-specific context
+<devflows-rules>
+# Global Rules
+...
+</devflows-rules>
+
+<session-status>
+BRANCH: feature/my-feature
+STATUS: SESSION_EXISTS
+
+Existing session detected. Run /continue to resume work.
+</session-status>
 ```
+
+## Development
+
+### Local Testing
+
+Test the plugin without installing:
+
+```bash
+claude --plugin-dir ~/devflows
+```
+
+### Debugging
+
+```bash
+claude --plugin-dir ~/devflows --debug
+```
+
+### Applying Changes
+
+No hot reload available. After modifying files:
+
+1. Exit the session (`/exit` or Ctrl+C)
+2. Restart with the same command
+
+### Verification
+
+In a session, verify the plugin is loaded:
+
+- `/help` - Check if skills are registered
+- Run `/spec` or `/continue` - Test skill execution
+- Check session start output for `<devflows-rules>` and `<session-status>`
 
 ## License
 
