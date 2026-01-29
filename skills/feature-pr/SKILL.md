@@ -22,7 +22,34 @@ Check `.devflows/sessions/<current_branch>/plan.md`:
 - All steps should be marked as completed
 - If not → Report and ask user how to proceed
 
-### 2. Format Before Commit (REQUIRED for Web)
+### 2. PR-Level Review (Deep)
+
+Run comprehensive review before creating PR. Use the `review` skill at PR level:
+
+**Checklist:**
+- [ ] All loop-level items
+- [ ] Security review (platform-specific)
+- [ ] Performance implications considered
+- [ ] Breaking changes identified and documented
+- [ ] Edge cases handled
+- [ ] Error messages are helpful (not exposing internals)
+
+**Platform-specific (iOS):**
+- [ ] Info.plist doesn't expose sensitive config
+- [ ] Keychain used for sensitive storage (not UserDefaults)
+- [ ] No private API usage
+
+**Platform-specific (Web):**
+- [ ] Environment variables properly separated (server vs client)
+- [ ] Authentication tokens handled securely
+- [ ] No SQL/NoSQL injection vectors
+- [ ] Dependencies don't have known vulnerabilities
+
+**If issues found:**
+- High severity → Fix before proceeding
+- Medium/Low → Document in PR description, let reviewer decide
+
+### 3. Format Before Commit (REQUIRED for Web)
 
 **Web projects**: Run format command before committing.
 
@@ -32,7 +59,7 @@ Check `.devflows/sessions/<current_branch>/plan.md`:
 source .devflows/build/config.sh 2>/dev/null && eval "$FORMAT_CMD" || true
 ```
 
-### 3. Create Commit
+### 4. Create Commit
 
 Stage and commit all changes:
 
@@ -52,13 +79,13 @@ Commit message guidelines:
 - Body explains what and why
 - Do NOT include Co-Authored-By (check CLAUDE.md for attribution settings)
 
-### 4. Push Branch
+### 5. Push Branch
 
 ```bash
 git push -u origin <branch_name>
 ```
 
-### 5. Create Pull Request
+### 6. Create Pull Request
 
 #### Template Selection
 
@@ -92,7 +119,7 @@ EOF
 )"
 ```
 
-### 6. Report Completion
+### 7. Report Completion
 
 Report to user:
 - PR URL

@@ -1,11 +1,39 @@
 ---
 name: implementation-loop
-description: Step execution cycle for feature development. Implement → Simplify → Build & Verify → Update Progress.
+description: Step execution cycle for feature development. Implement → Review → Format → Build → Update Progress.
 ---
 
 # implementation-loop
 
 The standard cycle for executing each step in feature development.
+
+## Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    STEP EXECUTION CYCLE                         │
+│                                                                 │
+│   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐   │
+│   │Implement │ → │ Review   │ → │ Format   │ → │  Build   │   │
+│   │          │   │ (step)   │   │          │   │ & Verify │   │
+│   └──────────┘   └──────────┘   └──────────┘   └──────────┘   │
+│                                                      │          │
+│                                        ┌─────────────┘          │
+│                                        ▼                        │
+│                                 ┌─────────────┐                 │
+│                                 │   Update    │                 │
+│                                 │  Progress   │                 │
+│                                 └─────────────┘                 │
+│                                        │                        │
+│                    ┌───────────────────┴───────────────────┐   │
+│                    ▼                                       ▼   │
+│             More Steps?                              All Done  │
+│                    │                                       │   │
+│                    └──► Next Step              Review(loop)◄┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
 
 ## Step Execution Cycle
 
@@ -15,12 +43,18 @@ For each step, follow this cycle:
 
 Write the code for the current step.
 
-### 2. Simplify
+### 2. Review (Step-Level)
 
-Review and refactor the implementation:
-- Remove unnecessary complexity
-- Follow project conventions
-- Keep changes minimal and focused
+Run quick review on the changes just made. Use the `review` skill at step level:
+
+**Checklist (fast - don't slow down the loop):**
+- [ ] No hardcoded secrets (API keys, passwords, tokens)
+- [ ] No sensitive data in logs or comments
+- [ ] No obvious infinite loops or blocking calls
+- [ ] No unused imports/variables just added
+- [ ] Code follows existing patterns in the file
+
+Skip detailed review if confident in the change. Save thorough review for loop-level.
 
 ### 3. Format (REQUIRED before commit)
 
@@ -35,16 +69,13 @@ fi
 
 **Web (Prettier)**:
 ```bash
-# MUST run format before every commit
 source .devflows/build/config.sh
 eval "$FORMAT_CMD"
 ```
 
-For Web projects, formatting is **mandatory** before committing. Check CLAUDE.md for the specific format command (e.g., `bun run format`).
-
 ### 4. Build & Verify
 
-**IMPORTANT: Read `.devflows/build/config.sh` to determine the platform and use the appropriate script.**
+**IMPORTANT: Read `.devflows/build/config.sh` to determine the platform.**
 
 **iOS**:
 ```bash
@@ -55,8 +86,6 @@ For Web projects, formatting is **mandatory** before committing. Check CLAUDE.md
 ```bash
 .claude/skills/web-dev/scripts/web-build.sh
 ```
-
-Check results:
 
 | Result | Action |
 |--------|--------|
@@ -75,7 +104,32 @@ Check results:
 
 ## After All Steps Complete
 
-### 1. Final Build Verification (Clean Build)
+### 1. Review (Loop-Level)
+
+Run comprehensive review on all changes in this cycle. Use the `review` skill at loop level:
+
+**Checklist:**
+- [ ] All step-level items across all changes
+- [ ] Error handling is consistent
+- [ ] No duplicate/redundant code introduced
+- [ ] Naming is consistent (variables, functions, files)
+- [ ] Changes are minimal - no scope creep
+- [ ] No leftover debug code or TODOs
+
+**Platform-specific (iOS):**
+- [ ] No retain cycles (check `[weak self]` in closures)
+- [ ] Async work not blocking main thread
+
+**Platform-specific (Web):**
+- [ ] No sensitive data in client-side storage
+- [ ] API calls have proper error handling
+
+**Use code-simplifier if available:**
+```
+If code can be simplified, use Task tool with subagent_type="code-simplifier"
+```
+
+### 2. Final Build Verification (Clean Build)
 
 **iOS**:
 ```bash
@@ -89,13 +143,6 @@ Check results:
 .claude/skills/web-dev/scripts/web-verify.sh  # lint, typecheck, tests
 ```
 
-### 2. Final Simplify Pass
-
-Review all changes holistically:
-- Ensure consistency across modified files
-- Remove any redundant code
-- Verify naming conventions
-
 ### 3. Request User Review
 
 ```
@@ -103,16 +150,30 @@ Review all changes holistically:
 
 All steps completed. Ready for review.
 
-**Changes**:
-- <summary of what was done>
-
-**Build Status**:
+**Review Status:**
+- Step reviews: ✅ All passed
+- Loop review: ✅ Complete
 - Build: ✅
 - Lint/Format: ✅
 - Tests: ✅ (if applicable)
 
+**Changes:**
+- <summary of what was done>
+
 Please review. When approved, run `/pr` to create PR.
 ```
+
+---
+
+## Review Levels Summary
+
+| Level | When | Focus | Depth |
+|-------|------|-------|-------|
+| Step | After each step | Just-added code | Quick |
+| Loop | After all steps | All changes holistically | Medium |
+| PR | Before PR (via `/pr`) | Comprehensive + security | Deep |
+
+The `/pr` skill will automatically run PR-level review before creating the pull request.
 
 ---
 
@@ -124,11 +185,11 @@ Please review. When approved, run `/pr` to create PR.
 2. Fix if straightforward
 3. If complex, document in `notes.md` and ask user
 
-### Warning Count Increased
+### Review Finds Issues
 
-1. Identify new warnings
-2. Fix if possible (unused variables, deprecated APIs, etc.)
-3. If intentional or cannot fix, report to user for approval
+1. Fix immediately if severity is high
+2. For medium/low, batch fixes at end of step
+3. Document decisions in `notes.md` if trade-offs involved
 
 ### Cannot Proceed
 
@@ -141,6 +202,7 @@ Please review. When approved, run `/pr` to create PR.
 ## Notes
 
 - Never proceed to next step if current step has build errors
+- Step reviews should be fast - thoroughness comes at loop level
 - Use incremental builds during development for speed (iOS)
 - Use clean builds for baseline and final verification
 - Keep the cycle tight: implement small, verify often

@@ -107,6 +107,7 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 | Skill | Description |
 |-------|-------------|
+| `review` | Multi-level code review (step/loop/pr) |
 | `feature-setup` | Create branch and documentation |
 | `feature-continue` | Resume with context restoration |
 | `feature-pr` | Commit, push, and create PR |
