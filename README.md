@@ -21,7 +21,7 @@ devflows/
 ├── global/
 │   └── rules.md              # Cross-project rules (auto-injected)
 └── skills/
-    ├── spec/SKILL.md         # Start planning
+    ├── design/SKILL.md       # Start planning
     ├── go/SKILL.md           # Begin implementation
     ├── continue/SKILL.md     # Resume work
     ├── pr/SKILL.md           # Create PR
@@ -68,7 +68,7 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        /spec                                    │
+│                       /design                                    │
 │  Start planning - discuss requirements, explore codebase        │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -99,7 +99,7 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 | Skill | Description |
 |-------|-------------|
-| `/spec` | Start planning a new feature |
+| `/design` | Start planning a new feature |
 | `/go` | Approve plan and begin implementation |
 | `/continue` | Resume work on existing feature |
 | `/pr` | Create pull request |
@@ -145,7 +145,7 @@ On session start, the plugin automatically:
 
 1. Injects `global/rules.md` as `<devflows-rules>`
 2. Detects current branch and session status
-3. Suggests `/continue` or `/spec` based on context
+3. Suggests `/continue` or `/design` based on context
 
 ```
 <devflows-rules>
@@ -189,7 +189,7 @@ No hot reload available. After modifying files:
 In a session, verify the plugin is loaded:
 
 - `/help` - Check if skills are registered
-- Run `/spec` or `/continue` - Test skill execution
+- Run `/design` or `/continue` - Test skill execution
 - Check session start output for `<devflows-rules>` and `<session-status>`
 
 ## License

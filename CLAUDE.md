@@ -23,7 +23,7 @@ devflows/
 │   └── session-start.sh
 │
 └── skills/             # Workflow skills
-    ├── spec/
+    ├── design/
     ├── go/
     ├── continue/
     ├── pr/

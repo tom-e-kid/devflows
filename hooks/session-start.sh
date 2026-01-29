@@ -32,7 +32,7 @@ if [[ -d "$SESSION_DIR" ]]; then
 else
     echo "STATUS: NO_SESSION"
     echo ""
-    echo "No active session. Run /spec to start planning a new feature."
+    echo "No active session. Run /design to start planning a new feature."
 fi
 
 echo "</session-status>"

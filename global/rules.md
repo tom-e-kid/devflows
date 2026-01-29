@@ -70,7 +70,7 @@ Detect the project's branching strategy:
 
 This repository provides skills for structured feature development:
 
-1. `/spec` - Start planning a new feature
+1. `/design` - Start planning a new feature
 2. `/go` - Approve plan and begin implementation
 3. `/continue` - Resume existing feature work
 4. `/pr` - Create pull request
