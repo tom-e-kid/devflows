@@ -1,11 +1,11 @@
 ---
 name: feature-pr
-description: Create a Pull Request for the completed feature. Commits changes and creates PR with proper template.
+description: Complete a feature branch. Creates PR (if remote exists) or merges locally (if no remote).
 ---
 
 # feature-pr
 
-Create a Pull Request for the completed feature.
+Complete a feature branch by creating a Pull Request or merging locally.
 
 ## Prerequisites
 
@@ -90,13 +90,87 @@ Commit message guidelines:
 - Body explains what and why
 - Do NOT include Co-Authored-By (check CLAUDE.md for attribution settings)
 
-### 5. Push Branch
+### 5. Check Remote Repository
+
+```bash
+git remote -v
+```
+
+- **Has remote** → Continue to Step 6 (Push Branch)
+- **No remote** → Go to Step 5a (Local Merge)
+
+### 5a. Local Merge (No Remote)
+
+When no remote repository is configured, merge locally instead of creating a PR.
+
+#### Confirm with User
+
+```
+## Local Merge: <branch_name>
+
+No remote repository configured. Will merge locally:
+
+1. Switch to `<base_branch>`
+2. Merge `<branch_name>`
+3. Delete feature branch
+4. Delete `.devflows/sessions/<branch_name>/`
+
+Proceed?
+```
+
+#### Execute Merge
+
+```bash
+# Switch to base branch
+git checkout <base_branch>
+
+# Merge feature branch
+git merge <branch_name>
+
+# Delete feature branch
+git branch -d <branch_name>
+
+# Delete feature documentation
+rm -rf .devflows/sessions/<branch_name>/
+```
+
+#### Handle Merge Conflicts
+
+If merge fails due to conflicts:
+1. Report conflicting files
+2. Ask user to resolve manually
+3. After resolution: `git add <files>` + `git commit`
+4. Then continue with branch cleanup
+
+#### Handle Branch Deletion Failure
+
+If `git branch -d` fails (branch not fully merged):
+1. Report the warning
+2. Ask user if they want to force delete with `git branch -D`
+
+#### Report Completion (Local Merge)
+
+```
+## Merge Complete
+
+- Merged: `<branch_name>` → `<base_branch>`
+- Deleted branch: `<branch_name>`
+- Deleted: `.devflows/sessions/<branch_name>/`
+
+Ready for next feature!
+```
+
+**END** (do not continue to Step 6)
+
+---
+
+### 6. Push Branch
 
 ```bash
 git push -u origin <branch_name>
 ```
 
-### 6. Create Pull Request
+### 7. Create Pull Request
 
 #### Template Selection
 
@@ -130,17 +204,48 @@ EOF
 )"
 ```
 
-### 7. Report Completion
+### 8. Report Completion
 
 Report to user:
 - PR URL
 - Summary of changes
 - Reminder about `.devflows/sessions/<branch_name>/` cleanup (separate instruction)
 
+## Flow Overview
+
+```
+┌─────────────────┐
+│  Create Commit  │
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  Check Remote   │
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+no remote   has remote
+    │         │
+    ▼         ▼
+┌────────┐  ┌────────────┐
+│ Local  │  │ Push Branch│
+│ Merge  │  └─────┬──────┘
+└───┬────┘        │
+    │       ┌─────▼──────┐
+    │       │ Create PR  │
+    │       └─────┬──────┘
+    │             │
+    ▼             ▼
+┌─────────────────────┐
+│  Report Completion  │
+└─────────────────────┘
+```
+
 ## Notes
 
 - Base branch is recorded in `requirements.md`
 - Follow project conventions for PR language (check CLAUDE.md or .devflows/pr/template.md)
 - Write clearly so beginners can understand
-- Do NOT automatically delete `.devflows/sessions/<branch_name>/` - wait for user instruction
+- For PR flow: Do NOT automatically delete `.devflows/sessions/<branch_name>/` - wait for user instruction
+- For local merge flow: Session cleanup is included in the flow
 - Build verification is handled by `/implementation-loop`, not this skill
