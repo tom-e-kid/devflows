@@ -14,17 +14,29 @@ This skill can be triggered automatically on session start when:
 
 ## Procedure
 
-### 1. Check PR Status First
+### 1. Gather Context (Parallel)
 
-Before resuming work, check if a PR already exists:
+**IMPORTANT: Run PR check and file reads in parallel using subagents for efficiency.**
 
-```bash
-gh pr list --head <branch_name> --state all --json number,state,reviewDecision,url
-```
+Use Task tool to spawn 5 subagents **in a single message** (parallel execution):
+
+| Agent | Type | Task |
+|-------|------|------|
+| 1 | Bash | `gh pr list --head <branch_name> --state all --json number,state,reviewDecision,url` |
+| 2 | Bash | `cat .devflows/sessions/<branch>/requirements.md` |
+| 3 | Bash | `cat .devflows/sessions/<branch>/notes.md` |
+| 4 | Bash | `cat .devflows/sessions/<branch>/plan.md` |
+| 5 | Bash | `cat .devflows/sessions/<branch>/build_baseline.log` |
+
+Wait for all agents to complete, then process results.
+
+### 2. Evaluate PR Status
+
+Based on Agent 1 result:
 
 | PR State | Action |
 |----------|--------|
-| No PR | Continue to step 2 |
+| No PR | Continue to step 3 |
 | open (pending review) | Report "PR pending review", ask if user wants to continue work |
 | open (approved) | Report "PR approved, ready to merge" |
 | merged | Report "PR merged", offer to cleanup `.devflows/sessions/<branch>/` |
@@ -32,15 +44,9 @@ gh pr list --head <branch_name> --state all --json number,state,reviewDecision,u
 
 If PR is merged, skip to cleanup flow instead of resuming development.
 
-### 2. Read Feature Documentation
-
-Read all files in `.devflows/sessions/<current_branch>/`:
-- `requirements.md` - Understand the goal
-- `notes.md` - Review context and decisions
-- `plan.md` - Check current progress
-- `build_baseline.log` - Get baseline warning count
-
 ### 3. Summarize Status to User
+
+Use Agents 2-5 results to understand the feature:
 
 Report:
 - What the feature is about

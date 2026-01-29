@@ -131,17 +131,29 @@ If code can be simplified, use Task tool with subagent_type="code-simplifier"
 
 ### 2. Final Build Verification (Clean Build)
 
-**iOS**:
-```bash
-.claude/skills/ios-dev/scripts/ios-build.sh latest
-.claude/skills/ios-dev/scripts/ios-build.sh minimum  # if configured
-```
+**IMPORTANT: Run builds in parallel using subagents for efficiency.**
 
-**Web**:
-```bash
-.claude/skills/web-dev/scripts/web-build.sh
-.claude/skills/web-dev/scripts/web-verify.sh  # lint, typecheck, tests
-```
+**iOS** (parallel):
+
+Use Task tool to spawn 2 Bash subagents **in a single message** (parallel execution):
+
+| Agent | Description | Command |
+|-------|-------------|---------|
+| 1 | iOS latest build | `.claude/skills/ios-dev/scripts/ios-build.sh latest` |
+| 2 | iOS minimum build | `.claude/skills/ios-dev/scripts/ios-build.sh minimum` |
+
+Skip Agent 2 if `MINIMUM_OS` is not configured in `config.sh`.
+
+**Web** (parallel):
+
+Use Task tool to spawn 2 Bash subagents **in a single message** (parallel execution):
+
+| Agent | Description | Command |
+|-------|-------------|---------|
+| 1 | Web build | `.claude/skills/web-dev/scripts/web-build.sh` |
+| 2 | Web verify | `.claude/skills/web-dev/scripts/web-verify.sh` |
+
+Wait for both agents to complete, then aggregate results.
 
 ### 3. Request User Review
 
