@@ -187,9 +187,16 @@ The `/pr` skill will automatically run PR-level review before creating the pull 
 
 ### Review Finds Issues
 
-1. Fix immediately if severity is high
-2. For medium/low, batch fixes at end of step
-3. Document decisions in `notes.md` if trade-offs involved
+**NEVER auto-fix.** Follow this flow:
+
+1. Record issues in `.devflows/sessions/<branch>/issues.md` (append)
+2. Report issues to user with clear table format
+3. Wait for user decision:
+   - "fix #1" → Fix specific issue
+   - "fix all" → Fix all issues
+   - "skip #2" → Mark as wontfix
+   - "continue" → Leave open, proceed
+4. Update issues.md with status after user decision
 
 ### Cannot Proceed
 

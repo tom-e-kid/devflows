@@ -133,6 +133,7 @@ During development, feature state is stored in `.devflows/sessions/<branch>/`:
 | `requirements.md` | Goal and full plan |
 | `notes.md` | Key decisions and context |
 | `plan.md` | Implementation checklist |
+| `issues.md` | Review issues (append-only, tracked until PR merge) |
 | `build_baseline.log` | Initial warning count |
 
 This directory is created by `/go` and deleted by `/feature-cleanup` after merge.

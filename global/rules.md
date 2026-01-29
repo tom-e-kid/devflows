@@ -85,6 +85,7 @@ Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
 | `requirements.md`    | Goal, base branch, full plan           |
 | `notes.md`           | Key decisions and context              |
 | `plan.md`            | Implementation checklist with progress |
+| `issues.md`          | Review issues (append-only)            |
 | `build_baseline.log` | Initial build warnings                 |
 
 

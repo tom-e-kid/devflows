@@ -7,6 +7,12 @@ description: Code review at different depths. Auto-detects platform and applies 
 
 Multi-level code review that adapts to context and platform.
 
+## Core Principle
+
+**NEVER auto-fix issues.** Always report to user and wait for explicit instruction.
+
+---
+
 ## Usage
 
 Called automatically by `implementation-loop` at different stages, or manually:
@@ -16,6 +22,98 @@ Called automatically by `implementation-loop` at different stages, or manually:
 /review --loop    # Loop-level (medium)
 /review --pr      # PR-level (deep)
 ```
+
+---
+
+## Issue Management
+
+### issues.md
+
+All detected issues are recorded in `.devflows/sessions/<branch>/issues.md`.
+
+**Location:** `.devflows/sessions/<current_branch>/issues.md`
+
+**Rules:**
+- **APPEND only** - never overwrite existing entries
+- Track issues throughout the entire development cycle (until PR merge)
+- Each review session adds a new section with timestamp
+- Issues persist across multiple loop iterations
+
+### issues.md Format
+
+```markdown
+# Issues
+
+## Review: <date> <time> (Level: step/loop/pr)
+
+### Issue 1: <title>
+- **Severity:** high / medium / low
+- **File:** `path/to/file.swift:123`
+- **Description:** Clear explanation of the issue
+- **Status:** open / fixed / wontfix
+- **Fixed in:** <commit hash or "N/A">
+
+### Issue 2: <title>
+...
+
+---
+
+## Review: <previous date> (Level: ...)
+...
+```
+
+### Status Values
+
+| Status | Meaning |
+|--------|---------|
+| `open` | Issue detected, not yet addressed |
+| `fixed` | User approved fix, issue resolved |
+| `wontfix` | User decided to skip (with reason noted) |
+
+---
+
+## When Issues Are Found
+
+### 1. Report to User
+
+Display issues clearly:
+
+```
+## Review Found Issues
+
+**Level:** step / loop / pr
+**New Issues:** <count>
+
+| # | Severity | File | Issue |
+|---|----------|------|-------|
+| 1 | high | `file.swift:42` | Hardcoded API key detected |
+| 2 | medium | `api.ts:15` | Missing error handling |
+
+These issues have been recorded in `.devflows/sessions/<branch>/issues.md`.
+
+**What would you like to do?**
+- Tell me which issues to fix (e.g., "fix #1 and #2")
+- Tell me to skip specific issues (e.g., "skip #2, it's intentional")
+- Continue without fixing (issues remain open)
+```
+
+### 2. Wait for User Decision
+
+**DO NOT proceed with fixes until user explicitly instructs.**
+
+User can respond with:
+- "fix #1" → Fix specific issue
+- "fix all" → Fix all issues
+- "skip #2" → Mark as wontfix with reason
+- "continue" → Leave issues open, proceed
+
+### 3. Update issues.md
+
+After user decision:
+- If fixed → Update status to `fixed`, add commit reference
+- If skipped → Update status to `wontfix`, add user's reason
+
+---
 
 ## Review Levels
 
@@ -116,46 +214,47 @@ If not available, detect from project files:
 
 ## Using code-simplifier
 
-If `code-simplifier` agent is available, invoke it for refactoring suggestions:
+If `code-simplifier` agent is available:
 
-```
-After completing checks, if code can be simplified:
-1. Use Task tool with subagent_type="code-simplifier"
-2. Apply suggested improvements
-3. Re-run build verification
-```
+1. Run code-simplifier for suggestions
+2. **Report suggestions to user** (do not auto-apply)
+3. Wait for user approval before applying changes
 
 Only use for Level 2+ reviews to avoid slowing down step-level checks.
 
 ---
 
-## Output Format
+## PR Readiness Check
 
-After review, report:
+Before creating PR, verify issues.md:
 
 ```
-## Review Complete (Level: [step/loop/pr])
+## Open Issues Summary
 
-**Platform:** iOS / Web
-**Files Reviewed:** <count>
+**Total issues this cycle:** <count>
+**Open:** <count>
+**Fixed:** <count>
+**Won't fix:** <count>
 
-**Issues Found:**
-- [ ] Issue 1 (severity: high/medium/low)
-- [ ] Issue 2
+### Open Issues (require attention):
+| # | Severity | Issue |
+|---|----------|-------|
+| 3 | medium | Missing error handling in api.ts |
 
-**Suggestions:**
-- Suggestion 1
-- Suggestion 2
-
-**Status:** ✅ Pass / ⚠️ Pass with warnings / ❌ Needs fixes
+**Recommendation:**
+- ❌ Cannot proceed - high severity issues open
+- ⚠️ Can proceed - only medium/low issues open (document in PR)
+- ✅ Ready - all issues resolved
 ```
 
 ---
 
 ## Notes
 
+- **Never auto-fix** - always report and wait for user decision
+- issues.md is append-only throughout the development cycle
 - Step-level reviews should be fast - skip if confident in the change
 - Loop-level reviews can take more time - thoroughness matters
 - PR-level reviews should be comprehensive - this is the last check
-- When in doubt about severity, ask the user
-- Don't block on style preferences - focus on correctness and security
+- High severity issues should block PR creation
+- Medium/low issues can proceed if documented in PR description

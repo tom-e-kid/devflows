@@ -46,8 +46,19 @@ Run comprehensive review before creating PR. Use the `review` skill at PR level:
 - [ ] Dependencies don't have known vulnerabilities
 
 **If issues found:**
-- High severity → Fix before proceeding
-- Medium/Low → Document in PR description, let reviewer decide
+
+1. Record in `.devflows/sessions/<branch>/issues.md` (append)
+2. Report to user - **NEVER auto-fix**
+3. Wait for user decision before proceeding
+
+**Blocking rules:**
+- High severity open → Cannot create PR (must fix or user override)
+- Medium/Low open → Can proceed if user approves (document in PR)
+
+**Check issues.md summary before proceeding:**
+```
+Open: X | Fixed: Y | Won't fix: Z
+```
 
 ### 3. Format Before Commit (REQUIRED for Web)
 
