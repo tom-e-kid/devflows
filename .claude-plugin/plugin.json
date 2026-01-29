@@ -1,7 +1,5 @@
 {
   "name": "devflows",
   "description": "Feature development workflow skills and hooks",
-  "version": "0.1.0",
-  "skills": "../skills/",
-  "hooks": "../hooks/hooks.json"
+  "version": "0.1.0"
 }
