@@ -104,3 +104,15 @@ This directory is created by `/feature-setup` and deleted by `/feature-cleanup` 
 - Use WebSearch/WebFetch to verify current behavior
 - Do not rely on training data for API specs or library usage
 
+## Skill Discovery
+
+- Observe patterns during conversations that could become reusable skills
+- Propose a new skill when you notice:
+  - A workflow being repeated across sessions
+  - A multi-step procedure that follows a consistent pattern
+  - A task that would benefit from standardization
+- When proposing, include:
+  - Suggested skill name
+  - Brief description of what it automates
+  - Key steps it would contain
+
