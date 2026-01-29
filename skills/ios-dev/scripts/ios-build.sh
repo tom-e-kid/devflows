@@ -14,14 +14,14 @@
 
 set -euo pipefail
 
-CONFIG_FILE="docs/build/config.sh"
+CONFIG_FILE=".devflows/build/config.sh"
 
 # Determine feature directory from current branch
 BRANCH_NAME=$(git branch --show-current 2>/dev/null || echo "")
-if [[ -n "$BRANCH_NAME" && -d "docs/sessions/$BRANCH_NAME" ]]; then
-    FEATURE_DIR="docs/sessions/$BRANCH_NAME"
+if [[ -n "$BRANCH_NAME" && -d ".devflows/sessions/$BRANCH_NAME" ]]; then
+    FEATURE_DIR=".devflows/sessions/$BRANCH_NAME"
 else
-    FEATURE_DIR="docs/build"
+    FEATURE_DIR=".devflows/build"
 fi
 
 BUILD_LOG="$FEATURE_DIR/build_output.log"

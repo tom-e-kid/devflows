@@ -1,6 +1,6 @@
 ---
 name: feature-continue
-description: Resume work on an existing feature. Auto-detects when docs/sessions/<branch>/ exists. Reads saved state and continues from last progress.
+description: Resume work on an existing feature. Auto-detects when .devflows/sessions/<branch>/ exists. Reads saved state and continues from last progress.
 ---
 
 # feature-continue
@@ -10,7 +10,7 @@ Resume work on an existing feature.
 ## Auto-detection
 
 This skill can be triggered automatically on session start when:
-- Current branch has `docs/sessions/<current_branch>/` directory
+- Current branch has `.devflows/sessions/<current_branch>/` directory
 
 ## Procedure
 
@@ -27,14 +27,14 @@ gh pr list --head <branch_name> --state all --json number,state,reviewDecision,u
 | No PR | Continue to step 2 |
 | open (pending review) | Report "PR pending review", ask if user wants to continue work |
 | open (approved) | Report "PR approved, ready to merge" |
-| merged | Report "PR merged", offer to cleanup `docs/sessions/<branch>/` |
+| merged | Report "PR merged", offer to cleanup `.devflows/sessions/<branch>/` |
 | closed | Report and discuss with user |
 
 If PR is merged, skip to cleanup flow instead of resuming development.
 
 ### 2. Read Feature Documentation
 
-Read all files in `docs/sessions/<current_branch>/`:
+Read all files in `.devflows/sessions/<current_branch>/`:
 - `requirements.md` - Understand the goal
 - `notes.md` - Review context and decisions
 - `plan.md` - Check current progress
@@ -71,7 +71,7 @@ Continue with Step 4?
 Run build to ensure current state is valid:
 
 ```bash
-source docs/build/config.sh
+source .devflows/build/config.sh
 $BUILD_CMD_LATEST
 ```
 

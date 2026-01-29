@@ -1,6 +1,6 @@
 ---
 name: web-dev
-description: Web/Next.js build configuration and verification. Creates docs/build/config.sh for web projects.
+description: Web/Next.js build configuration and verification. Creates .devflows/build/config.sh for web projects.
 ---
 
 # web-dev
@@ -17,14 +17,14 @@ Configure and verify build settings for Web/Next.js projects.
 
 ## Behavior
 
-1. Check if `docs/build/config.sh` exists
+1. Check if `.devflows/build/config.sh` exists
 2. If exists:
    - Read and display current configuration
    - Ask user if they want to reconfigure
 3. If not exists (or reconfigure requested):
    - Run environment investigation using helper script
    - Present findings to user for confirmation
-   - Generate `docs/build/config.sh`
+   - Generate `.devflows/build/config.sh`
 
 ## Environment Investigation
 
@@ -52,7 +52,7 @@ Based on the output, ask user to confirm:
 
 ## Configuration File Format
 
-Generate `docs/build/config.sh`:
+Generate `.devflows/build/config.sh`:
 
 ```bash
 #!/bin/bash
@@ -145,7 +145,7 @@ BUILD_CMD="bun run --cwd apps/web build"
 
 ## Notes
 
-- `docs/build/config.sh` is local only (should be in .gitignore)
+- `.devflows/build/config.sh` is local only (should be in .gitignore)
 - Reconfigure when Node.js or package manager is updated
 - For Turborepo projects, always run commands from repo root
 - Check CLAUDE.md for project-specific command details

@@ -75,9 +75,9 @@ This repository provides skills for structured feature development:
 3. `/continue` - Resume existing feature work
 4. `/pr` - Create pull request
 
-### docs/sessions/ Structure
+### .devflows/sessions/ Structure
 
-Feature documentation is stored in `docs/sessions/<branch_name>/`:
+Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
 
 
 | File                 | Purpose                                |

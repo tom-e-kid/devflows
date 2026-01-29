@@ -11,7 +11,7 @@ Resume work on an existing feature.
 
 Runs `/feature-continue` to:
 - Check PR status
-- Read saved documentation from `docs/sessions/<branch>/`
+- Read saved documentation from `.devflows/sessions/<branch>/`
 - Summarize current progress
 - Resume implementation
 
@@ -32,4 +32,4 @@ Execute the `/feature-continue` skill. This will:
 
 - This skill is a simple alias for `/feature-continue`
 - Use this when returning to an existing feature branch
-- Session-start hook will suggest this when `docs/sessions/<branch>/` exists
+- Session-start hook will suggest this when `.devflows/sessions/<branch>/` exists

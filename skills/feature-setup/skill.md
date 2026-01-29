@@ -1,6 +1,6 @@
 ---
 name: feature-setup
-description: Set up feature branch and documentation after plan approval. Creates branch, saves plan to docs/sessions/, runs initial build.
+description: Set up feature branch and documentation after plan approval. Creates branch, saves plan to .devflows/sessions/, runs initial build.
 ---
 
 # feature-setup
@@ -71,7 +71,7 @@ git checkout -b <feature_branch> origin/<base_branch>
 
 ### 4. Create Feature Documentation
 
-Create `docs/sessions/<branch_name>/` directory with:
+Create `.devflows/sessions/<branch_name>/` directory with:
 
 **requirements.md**
 ```markdown
@@ -138,12 +138,12 @@ Run a clean build to establish the baseline. Use the appropriate script based on
 
 **iOS**:
 ```bash
-.claude/skills/ios-dev/scripts/ios-build.sh latest --save-baseline docs/sessions/<branch_name>/build_baseline.log
+.claude/skills/ios-dev/scripts/ios-build.sh latest --save-baseline .devflows/sessions/<branch_name>/build_baseline.log
 ```
 
 **Web**:
 ```bash
-.claude/skills/web-dev/scripts/web-build.sh --save-baseline docs/sessions/<branch_name>/build_baseline.log
+.claude/skills/web-dev/scripts/web-build.sh --save-baseline .devflows/sessions/<branch_name>/build_baseline.log
 ```
 
 Update `plan.md` with baseline status.
@@ -156,7 +156,7 @@ Update `plan.md` with baseline status.
 
 ```
 ✓ Branch: <branch_name>
-✓ Docs: docs/sessions/<branch_name>/
+✓ Docs: .devflows/sessions/<branch_name>/
 ✓ Build: OK (warnings: <count>)
 
 Starting implementation...

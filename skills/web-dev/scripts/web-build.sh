@@ -22,7 +22,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Load config
-CONFIG_FILE="docs/build/config.sh"
+CONFIG_FILE=".devflows/build/config.sh"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "Error: $CONFIG_FILE not found. Run /web-dev first." >&2
     exit 1

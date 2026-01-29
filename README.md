@@ -125,7 +125,7 @@ Platform skills are automatically called by `feature-setup` based on project det
 
 ## Feature Documentation
 
-During development, feature state is stored in `docs/sessions/<branch>/`:
+During development, feature state is stored in `.devflows/sessions/<branch>/`:
 
 | File | Purpose |
 |------|---------|
@@ -143,7 +143,7 @@ This directory is created by `/go` and deleted by `/feature-cleanup` after merge
          ↓
 .claude/CLAUDE.md            # Project-specific rules
          ↓
-docs/sessions/<branch>/      # Feature-specific context
+.devflows/sessions/<branch>/      # Feature-specific context
 ```
 
 ## License

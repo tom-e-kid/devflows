@@ -17,7 +17,7 @@ Approve the current plan and begin implementation.
 
 1. Runs `/feature-setup` to:
    - Create feature branch
-   - Save plan to `docs/sessions/<branch>/`
+   - Save plan to `.devflows/sessions/<branch>/`
    - Run initial build and save baseline
 2. Proceeds to implementation
 
@@ -28,7 +28,7 @@ Approve the current plan and begin implementation.
 Execute the `/feature-setup` skill. This will:
 - Propose a branch name based on the plan
 - Create the branch after user confirmation
-- Save requirements, notes, and plan to `docs/sessions/<branch>/`
+- Save requirements, notes, and plan to `.devflows/sessions/<branch>/`
 - Check build configuration
 - Run initial build and save baseline
 - Ask user how to continue (same session or /clear)

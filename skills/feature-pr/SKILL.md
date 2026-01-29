@@ -18,7 +18,7 @@ Before running this skill:
 
 ### 1. Verify Completion
 
-Check `docs/sessions/<current_branch>/plan.md`:
+Check `.devflows/sessions/<current_branch>/plan.md`:
 - All steps should be marked as completed
 - If not → Report and ask user how to proceed
 
@@ -29,7 +29,7 @@ Check `docs/sessions/<current_branch>/plan.md`:
 ```bash
 # Check CLAUDE.md for the specific command
 # Example: bun run format
-source docs/build/config.sh 2>/dev/null && eval "$FORMAT_CMD" || true
+source .devflows/build/config.sh 2>/dev/null && eval "$FORMAT_CMD" || true
 ```
 
 ### 3. Create Commit
@@ -62,7 +62,7 @@ git push -u origin <branch_name>
 
 #### Template Selection
 
-1. Check if `docs/pr/template.md` exists
+1. Check if `.devflows/pr/template.md` exists
 2. If exists → Follow its format and rules
 3. If not exists → Use default format below
 
@@ -97,12 +97,12 @@ EOF
 Report to user:
 - PR URL
 - Summary of changes
-- Reminder about `docs/sessions/<branch_name>/` cleanup (separate instruction)
+- Reminder about `.devflows/sessions/<branch_name>/` cleanup (separate instruction)
 
 ## Notes
 
 - Base branch is recorded in `requirements.md`
-- Follow project conventions for PR language (check CLAUDE.md or docs/pr/template.md)
+- Follow project conventions for PR language (check CLAUDE.md or .devflows/pr/template.md)
 - Write clearly so beginners can understand
-- Do NOT automatically delete `docs/sessions/<branch_name>/` - wait for user instruction
+- Do NOT automatically delete `.devflows/sessions/<branch_name>/` - wait for user instruction
 - Build verification is handled by `/implementation-loop`, not this skill

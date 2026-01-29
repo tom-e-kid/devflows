@@ -36,7 +36,7 @@ fi
 **Web (Prettier)**:
 ```bash
 # MUST run format before every commit
-source docs/build/config.sh
+source .devflows/build/config.sh
 eval "$FORMAT_CMD"
 ```
 
@@ -44,7 +44,7 @@ For Web projects, formatting is **mandatory** before committing. Check CLAUDE.md
 
 ### 4. Build & Verify
 
-**IMPORTANT: Read `docs/build/config.sh` to determine the platform and use the appropriate script.**
+**IMPORTANT: Read `.devflows/build/config.sh` to determine the platform and use the appropriate script.**
 
 **iOS**:
 ```bash

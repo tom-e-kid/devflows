@@ -11,5 +11,5 @@
 *~
 
 # Build outputs
-docs/build/config.sh
-docs/sessions/
+.devflows/build/config.sh
+.devflows/sessions/
