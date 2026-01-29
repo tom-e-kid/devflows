@@ -1,9 +1,9 @@
 ---
-name: plan
+name: spec
 description: Start a new feature. Enters Plan Mode for requirements discussion and planning.
 ---
 
-# plan
+# spec
 
 Start a new feature development session.
 

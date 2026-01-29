@@ -17,7 +17,7 @@ devflows/
 │   └── rules.md           # Cross-project common rules
 │
 └── skills/                # Workflow skills
-    ├── plan/              # Start planning
+    ├── spec/              # Start planning
     ├── go/                # Begin implementation
     ├── continue/          # Resume work
     ├── pr/                # Create PR
@@ -67,7 +67,7 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        /plan                                     │
+│                        /spec                                     │
 │  Start planning - discuss requirements, explore codebase         │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -98,7 +98,7 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 | Skill | Description |
 |-------|-------------|
-| `/plan` | Start planning a new feature |
+| `/spec` | Start planning a new feature |
 | `/go` | Approve plan and begin implementation |
 | `/continue` | Resume work on existing feature |
 | `/pr` | Create pull request |
