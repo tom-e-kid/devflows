@@ -68,12 +68,42 @@ Detect the project's branching strategy:
 
 ## Feature Development Workflow
 
-This repository provides skills for structured feature development:
+This repository provides skills for structured feature development. Use the state-based guide below to determine which command to run.
 
-1. `/devflows:plan` - Start planning a new feature
-2. `/devflows:exec` - Approve plan and begin implementation
-3. `/devflows:resume` - Resume existing feature work
-4. `/devflows:pr` - Create pull request
+### Workflow States
+
+| State | Indicators |
+|-------|------------|
+| `no-session` | No `.devflows/sessions/<branch>/` exists |
+| `planning` | In CC plan mode, session not yet created |
+| `implementing` | Session exists, steps incomplete |
+| `pr-ready` | All steps complete, PR not created |
+| `pr-open` | PR exists and is open |
+
+### State → Command Mapping
+
+| Current State | Command | Next State |
+|---------------|---------|------------|
+| `no-session` | `/devflows:plan` | `planning` |
+| `planning` (plan approved) | `/devflows:exec` | `implementing` |
+| `implementing` | `/devflows:resume` | `implementing` |
+| `implementing` (all complete) | `/devflows:pr` | `pr-open` |
+| `pr-open` (merged) | cleanup | `no-session` |
+
+### Auto-Detection
+
+The session-start hook outputs status to help you decide:
+
+- `STATUS: NO_SESSION` → suggest `/devflows:plan`
+- `STATUS: SESSION_EXISTS` → suggest `/devflows:resume`
+
+### Recovery Paths
+
+| Situation | Action |
+|-----------|--------|
+| Build fails during implementation | Fix in current session, retry |
+| Need to revise plan | Edit `plan.md` directly, continue |
+| Abandon feature | Delete `.devflows/sessions/<branch>/`, delete branch |
 
 ### /devflows:plan Command Behavior
 
@@ -83,7 +113,6 @@ This repository provides skills for structured feature development:
 
 Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
 
-
 | File                 | Purpose                                |
 | -------------------- | -------------------------------------- |
 | `requirements.md`    | Goal, base branch, full plan           |
@@ -91,7 +120,6 @@ Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
 | `plan.md`            | Implementation checklist with progress |
 | `issues.md`          | Review issues (append-only)            |
 | `build_baseline.log` | Initial build warnings                 |
-
 
 This directory is created by `/devflows:feature-setup` and deleted by `/devflows:feature-cleanup` after PR merge.
 
