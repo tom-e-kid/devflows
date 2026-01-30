@@ -1,21 +1,21 @@
 ---
-name: go
-description: Approve the plan and start implementation. Runs /feature-setup to create branch and docs.
+name: exec
+description: Approve the plan and start implementation. Runs /devflows:feature-setup to create branch and docs.
 ---
 
-# go
+# exec
 
 Approve the current plan and begin implementation.
 
 ## Prerequisites
 
-- Should be in Plan Mode (after running `/start`)
+- Should be in Plan Mode (after running `/devflows:plan`)
 - Plan discussion should be complete
 - User is ready to proceed with implementation
 
 ## What This Skill Does
 
-1. Runs `/feature-setup` to:
+1. Runs `/devflows:feature-setup` to:
    - Create feature branch
    - Save plan to `.devflows/sessions/<branch>/`
    - Run initial build and save baseline
@@ -23,9 +23,9 @@ Approve the current plan and begin implementation.
 
 ## Procedure
 
-### 1. Run /feature-setup
+### 1. Run /devflows:feature-setup
 
-Execute the `/feature-setup` skill. This will:
+Execute the `/devflows:feature-setup` skill. This will:
 - Propose a branch name based on the plan
 - Create the branch after user confirmation
 - Save requirements, notes, and plan to `.devflows/sessions/<branch>/`
@@ -35,16 +35,16 @@ Execute the `/feature-setup` skill. This will:
 
 ### 2. Follow feature-setup Flow
 
-Let `/feature-setup` handle the rest of the flow, including:
+Let `/devflows:feature-setup` handle the rest of the flow, including:
 - Branch creation
 - Documentation setup
 - Build verification
-- Transition to `/implementation-loop`
+- Transition to `/devflows:implementation-loop`
 
 ---
 
 ## Notes
 
-- This skill is a simple wrapper that triggers `/feature-setup`
-- All the actual work is done by `/feature-setup`
+- This skill is a simple wrapper that triggers `/devflows:feature-setup`
+- All the actual work is done by `/devflows:feature-setup`
 - User should run this after planning is complete

@@ -87,7 +87,7 @@ $BUILD_CMD_LATEST
 
 ### 5. Continue Work
 
-After user confirms, resume using `/implementation-loop`.
+After user confirms, resume using `/devflows:implementation-loop`.
 
 ---
 

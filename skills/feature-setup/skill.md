@@ -128,9 +128,9 @@ Detect project type and run the appropriate platform skill:
 
 | Project Indicator | Platform Skill |
 |-------------------|----------------|
-| `*.xcworkspace` or `*.xcodeproj` | `/ios-dev` |
-| `build.gradle` or `build.gradle.kts` | `/android-dev` |
-| `package.json` | `/web-dev` |
+| `*.xcworkspace` or `*.xcodeproj` | `/devflows:ios-dev` |
+| `build.gradle` or `build.gradle.kts` | `/devflows:android-dev` |
+| `package.json` | `/devflows:web-dev` |
 
 ### 6. Initial Build & Baseline (Clean Build)
 
@@ -151,7 +151,7 @@ Update `plan.md` with baseline status.
 ### 7. Proceed to Implementation
 
 **If all steps succeeded (no errors):**
-- Display brief status and proceed directly to `/implementation-loop`
+- Display brief status and proceed directly to `/devflows:implementation-loop`
 - Do NOT ask user for confirmation
 
 ```
@@ -162,7 +162,7 @@ Update `plan.md` with baseline status.
 Starting implementation...
 ```
 
-Then immediately run `/implementation-loop`.
+Then immediately run `/devflows:implementation-loop`.
 
 **If any step failed (build error, git error, etc.):**
 - Stop and report the issue to user

@@ -172,7 +172,7 @@ All steps completed. Ready for review.
 **Changes:**
 - <summary of what was done>
 
-Please review. When approved, run `/pr` to create PR.
+Please review. When approved, run `/devflows:pr` to create PR.
 ```
 
 ---
@@ -183,9 +183,9 @@ Please review. When approved, run `/pr` to create PR.
 |-------|------|-------|-------|
 | Step | After each step | Just-added code | Quick |
 | Loop | After all steps | All changes holistically | Medium |
-| PR | Before PR (via `/pr`) | Comprehensive + security | Deep |
+| PR | Before PR (via `/devflows:pr`) | Comprehensive + security | Deep |
 
-The `/pr` skill will automatically run PR-level review before creating the pull request.
+The `/devflows:pr` skill will automatically run PR-level review before creating the pull request.
 
 ---
 

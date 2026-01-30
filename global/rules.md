@@ -70,14 +70,14 @@ Detect the project's branching strategy:
 
 This repository provides skills for structured feature development:
 
-1. `/design` - Start planning a new feature
-2. `/go` - Approve plan and begin implementation
-3. `/continue` - Resume existing feature work
-4. `/pr` - Create pull request
+1. `/devflows:plan` - Start planning a new feature
+2. `/devflows:exec` - Approve plan and begin implementation
+3. `/devflows:resume` - Resume existing feature work
+4. `/devflows:pr` - Create pull request
 
-### /design Command Behavior
+### /devflows:plan Command Behavior
 
-**CRITICAL:** When the `/design` skill is invoked, you MUST call the `EnterPlanMode` tool IMMEDIATELY before doing anything else. Do not ask questions, explore the codebase, or display guidance first. Call EnterPlanMode first, then proceed with the skill.
+**CRITICAL:** When the `/devflows:plan` skill is invoked, you MUST call the `EnterPlanMode` tool IMMEDIATELY before doing anything else. Do not ask questions, explore the codebase, or display guidance first. Call EnterPlanMode first, then proceed with the skill.
 
 ### .devflows/sessions/ Structure
 
@@ -93,7 +93,7 @@ Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
 | `build_baseline.log` | Initial build warnings                 |
 
 
-This directory is created by `/feature-setup` and deleted by `/feature-cleanup` after PR merge.
+This directory is created by `/devflows:feature-setup` and deleted by `/devflows:feature-cleanup` after PR merge.
 
 ## Code Review
 

@@ -28,11 +28,11 @@ echo "BRANCH: $BRANCH"
 if [[ -d "$SESSION_DIR" ]]; then
     echo "STATUS: SESSION_EXISTS"
     echo ""
-    echo "Existing session detected. Run /continue to resume work."
+    echo "Existing session detected. Run /devflows:resume to resume work."
 else
     echo "STATUS: NO_SESSION"
     echo ""
-    echo "No active session. Run /design to start planning a new feature."
+    echo "No active session. Run /devflows:plan to start planning a new feature."
 fi
 
 echo "</session-status>"

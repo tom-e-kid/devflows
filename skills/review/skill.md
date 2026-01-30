@@ -18,9 +18,9 @@ Multi-level code review that adapts to context and platform.
 Called automatically by `implementation-loop` at different stages, or manually:
 
 ```
-/review           # Default: step-level (quick)
-/review --loop    # Loop-level (medium)
-/review --pr      # PR-level (deep)
+/devflows:review           # Default: step-level (quick)
+/devflows:review --loop    # Loop-level (medium)
+/devflows:review --pr      # PR-level (deep)
 ```
 
 ---
@@ -145,7 +145,7 @@ Checklist:
 
 ### Level 3: PR (Deep)
 
-**When:** Before creating PR (`/pr` or manual `/review --pr`)
+**When:** Before creating PR (`/devflows:pr` or manual `/devflows:review --pr`)
 **Focus:** Comprehensive review ready for external review
 
 Checklist:

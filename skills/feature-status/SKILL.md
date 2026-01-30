@@ -26,7 +26,7 @@ gh pr list --head <branch_name> --state all --json number,state,reviewDecision,m
 
 | PR State | Review Decision | Status | Suggested Action |
 |----------|-----------------|--------|------------------|
-| No PR found | - | **Work in progress** | Continue development or run `/feature-pr` |
+| No PR found | - | **Work in progress** | Continue development or run `/devflows:pr` |
 | open | REVIEW_REQUIRED | **PR pending review** | Wait for reviewer |
 | open | CHANGES_REQUESTED | **Changes requested** | Address review comments |
 | open | APPROVED | **PR approved** | Ready to merge |
@@ -68,7 +68,7 @@ When `feature-continue` detects `.devflows/sessions/<branch>/` exists:
 **Review**: Approved by @reviewer
 
 ### Suggested Action
-PR is ready to merge. After merging, run `/feature-status` again to cleanup.
+PR is ready to merge. After merging, run `/devflows:feature-status` again to cleanup.
 ```
 
 ```

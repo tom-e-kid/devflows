@@ -1,6 +1,6 @@
 ---
 name: pr
-description: Create a Pull Request. Alias for /feature-pr.
+description: Create a Pull Request. Alias for /devflows:feature-pr.
 ---
 
 # pr
@@ -9,16 +9,16 @@ Create a Pull Request for the completed feature.
 
 ## What This Skill Does
 
-Runs `/feature-pr` to:
+Runs `/devflows:feature-pr` to:
 - Verify all steps are completed
 - Create commit with proper message
 - Push branch and create PR
 
 ## Procedure
 
-### 1. Run /feature-pr
+### 1. Run /devflows:feature-pr
 
-Execute the `/feature-pr` skill. This will:
+Execute the `/devflows:feature-pr` skill. This will:
 - Check plan.md for completion status
 - Stage and commit changes
 - Push to remote
@@ -29,5 +29,5 @@ Execute the `/feature-pr` skill. This will:
 
 ## Notes
 
-- This skill is a simple alias for `/feature-pr`
+- This skill is a simple alias for `/devflows:feature-pr`
 - Use this when implementation is complete and reviewed

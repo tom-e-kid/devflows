@@ -21,9 +21,9 @@ devflows/
 ├── global/
 │   └── rules.md              # Cross-project rules (auto-injected)
 └── skills/
-    ├── design/SKILL.md       # Start planning
-    ├── go/SKILL.md           # Begin implementation
-    ├── continue/SKILL.md     # Resume work
+    ├── plan/SKILL.md         # Start planning
+    ├── exec/SKILL.md         # Begin implementation
+    ├── resume/SKILL.md       # Resume work
     ├── pr/SKILL.md           # Create PR
     ├── ios-dev/SKILL.md      # iOS build configuration
     ├── web-dev/SKILL.md      # Web build configuration
@@ -68,13 +68,13 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                       /design                                    │
+│                    /devflows:plan                               │
 │  Start planning - discuss requirements, explore codebase        │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                         /go                                     │
+│                    /devflows:exec                               │
 │  Approve plan - create branch, save docs, start implementation  │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -87,10 +87,10 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
             ┌─────────────────┴─────────────────┐
             │                                   │
             ▼                                   ▼
-    ┌──────────────┐                   ┌──────────────┐
-    │  /continue   │                   │    /pr       │
-    │  Resume work │                   │  Create PR   │
-    └──────────────┘                   └──────────────┘
+    ┌───────────────┐                  ┌───────────────┐
+    │/devflows:resume│                 │ /devflows:pr  │
+    │  Resume work  │                  │  Create PR    │
+    └───────────────┘                  └───────────────┘
 ```
 
 ## Skills Reference
@@ -99,10 +99,10 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 | Skill | Description |
 |-------|-------------|
-| `/design` | Start planning a new feature |
-| `/go` | Approve plan and begin implementation |
-| `/continue` | Resume work on existing feature |
-| `/pr` | Create pull request |
+| `/devflows:plan` | Start planning a new feature |
+| `/devflows:exec` | Approve plan and begin implementation |
+| `/devflows:resume` | Resume work on existing feature |
+| `/devflows:pr` | Create pull request |
 
 ### Internal Skills
 
@@ -137,7 +137,7 @@ During development, feature state is stored in `.devflows/sessions/<branch>/`:
 | `issues.md` | Review issues (append-only, tracked until PR merge) |
 | `build_baseline.log` | Initial warning count |
 
-This directory is created by `/go` and deleted by `/feature-cleanup` after merge.
+This directory is created by `/devflows:exec` and deleted by `/devflows:feature-cleanup` after merge.
 
 ## How It Works
 
@@ -145,7 +145,7 @@ On session start, the plugin automatically:
 
 1. Injects `global/rules.md` as `<devflows-rules>`
 2. Detects current branch and session status
-3. Suggests `/continue` or `/design` based on context
+3. Suggests `/devflows:resume` or `/devflows:plan` based on context
 
 ```
 <devflows-rules>
@@ -157,7 +157,7 @@ On session start, the plugin automatically:
 BRANCH: feature/my-feature
 STATUS: SESSION_EXISTS
 
-Existing session detected. Run /continue to resume work.
+Existing session detected. Run /devflows:resume to resume work.
 </session-status>
 ```
 
@@ -189,7 +189,7 @@ No hot reload available. After modifying files:
 In a session, verify the plugin is loaded:
 
 - `/help` - Check if skills are registered
-- Run `/design` or `/continue` - Test skill execution
+- Run `/devflows:plan` or `/devflows:resume` - Test skill execution
 - Check session start output for `<devflows-rules>` and `<session-status>`
 
 ## License

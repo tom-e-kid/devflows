@@ -12,7 +12,7 @@ Complete a feature branch by creating a Pull Request or merging locally.
 Before running this skill:
 - All steps in `plan.md` should be completed
 - User review should be passed
-- Build verification should be done via `/implementation-loop` (this skill does NOT run builds)
+- Build verification should be done via `/devflows:implementation-loop` (this skill does NOT run builds)
 
 ## Procedure
 
@@ -248,4 +248,4 @@ no remote   has remote
 - Write clearly so beginners can understand
 - For PR flow: Do NOT automatically delete `.devflows/sessions/<branch_name>/` - wait for user instruction
 - For local merge flow: Session cleanup is included in the flow
-- Build verification is handled by `/implementation-loop`, not this skill
+- Build verification is handled by `/devflows:implementation-loop`, not this skill

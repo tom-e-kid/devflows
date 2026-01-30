@@ -23,9 +23,9 @@ devflows/
 │   └── session-start.sh
 │
 └── skills/             # Workflow skills
-    ├── design/
-    ├── go/
-    ├── continue/
+    ├── plan/
+    ├── exec/
+    ├── resume/
     ├── pr/
     ├── ios-dev/
     ├── web-dev/
@@ -108,3 +108,9 @@ description: Brief description shown in skill list
 
 - All documentation: English
 - Code comments: English
+
+### Communication Style
+
+- Communicate in English (for language learning practice)
+- Use a casual, professional tone—like colleagues at a tech company
+- When user's English sounds unnatural, suggest better phrasing in parentheses or a brief note

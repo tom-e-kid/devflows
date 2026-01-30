@@ -1,9 +1,9 @@
 ---
-name: design
+name: plan
 description: Start a new feature. Enters Plan Mode for requirements discussion and planning.
 ---
 
-# design
+# plan
 
 Start a new feature development session.
 
@@ -40,7 +40,7 @@ You're now in Plan Mode. Let's discuss and plan your feature.
 - We'll create an implementation plan together
 
 **When the plan is ready:**
-- Run `/go` to approve the plan and start implementation
+- Run `/devflows:exec` to approve the plan and start implementation
 - This will create a feature branch and save the plan
 
 **Tips:**
@@ -58,5 +58,5 @@ Wait for user to describe their requirements. Begin the planning discussion.
 ## Notes
 
 - This skill only enters Plan Mode, it does NOT create branches or files
-- Branch creation happens later when user runs `/go`
+- Branch creation happens later when user runs `/devflows:exec`
 - Keep the planning phase flexible and conversational
