@@ -20,7 +20,9 @@ if [[ -z "$BRANCH" ]]; then
     exit 0
 fi
 
-SESSION_DIR=".devflows/sessions/$BRANCH"
+# Resolve git root for .devflows directory (monorepo support)
+GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH"
 
 echo "<session-status>"
 echo "BRANCH: $BRANCH"
@@ -29,10 +31,12 @@ if [[ -d "$SESSION_DIR" ]]; then
     echo "STATUS: SESSION_EXISTS"
     echo ""
     echo "Existing session detected. Run /devflows:resume to resume work."
+    echo "Or run /devflows:status to check progress."
 else
     echo "STATUS: NO_SESSION"
     echo ""
-    echo "No active session. Run /devflows:plan to start planning a new feature."
+    echo "No active session. Describe what you want to implement to start planning."
+    echo "Or run /devflows:ideas to browse saved ideas."
 fi
 
 echo "</session-status>"

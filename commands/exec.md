@@ -1,5 +1,0 @@
----
-description: "Approve the plan and start implementation. Creates branch and docs."
----
-
-Invoke the devflows:exec skill and follow it exactly as presented to you

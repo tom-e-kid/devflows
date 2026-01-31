@@ -9,6 +9,17 @@ devflows provides:
 - **Global Rules** - Cross-project common rules (auto-injected via SessionStart hook)
 - **Skills** - Structured feature development workflow
 
+### Philosophy
+
+devflows ensures quality and traceability in feature development:
+
+1. **Plan before code** - Use standard plan mode; no code changes without a plan
+2. **Track progress** - Session files record state; resume anytime
+3. **Review every step** - Each implementation step includes review & refactor
+4. **Build accountability** - Compare before/after builds; fix regressions
+5. **Format consistently** - Platform-specific formatting before commit
+6. **Structured PRs** - Follow project PR format conventions
+
 ## Repository Structure
 
 ```
@@ -20,10 +31,17 @@ devflows/
 │   └── session-start.sh      # Rules injection + session status
 ├── global/
 │   └── rules.md              # Cross-project rules (auto-injected)
+├── commands/                 # User-invocable commands
+│   ├── idea.md
+│   ├── ideas.md
+│   ├── resume.md
+│   ├── status.md
+│   └── pr.md
 └── skills/
-    ├── plan/SKILL.md         # Start planning
-    ├── exec/SKILL.md         # Begin implementation
+    ├── idea/SKILL.md         # Save idea for later
+    ├── ideas/SKILL.md        # List saved ideas
     ├── resume/SKILL.md       # Resume work
+    ├── status/SKILL.md       # Check progress
     ├── pr/SKILL.md           # Create PR
     ├── ios-dev/SKILL.md      # iOS build configuration
     ├── web-dev/SKILL.md      # Web build configuration
@@ -66,22 +84,25 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 ## Workflow
 
+devflows integrates with Claude Code's standard plan mode. No special commands needed to start planning.
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    /devflows:plan                               │
-│  Start planning - discuss requirements, explore codebase        │
+│                    Standard Plan Mode                            │
+│  "Let's implement X" → Claude enters plan mode naturally         │
+│  Discuss requirements → Create plan → User approves              │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    /devflows:exec                               │
-│  Approve plan - create branch, save docs, start implementation  │
+│                   Implementation Protocol                        │
+│  Session setup → Baseline build → Save plan to .devflows/        │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Implementation Loop                           │
-│  Implement → Simplify → Format → Build → Update Progress        │
+│                   Implementation Loop                            │
+│  Implement → Review → Update Progress → Format → Commit          │
 └─────────────────────────────────────────────────────────────────┘
                               │
             ┌─────────────────┴─────────────────┐
@@ -93,15 +114,16 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
     └───────────────┘                  └───────────────┘
 ```
 
-## Skills Reference
+## Commands Reference
 
 ### User Commands
 
-| Skill | Description |
-|-------|-------------|
-| `/devflows:plan` | Start planning a new feature |
-| `/devflows:exec` | Approve plan and begin implementation |
+| Command | Description |
+|---------|-------------|
+| `/devflows:idea` | Save current discussion as idea for later |
+| `/devflows:ideas` | List all saved ideas, select to view |
 | `/devflows:resume` | Resume work on existing feature |
+| `/devflows:status` | Show implementation progress |
 | `/devflows:pr` | Create pull request |
 
 ### Internal Skills
@@ -109,7 +131,6 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 | Skill | Description |
 |-------|-------------|
 | `review` | Multi-level code review (step/loop/pr) |
-| `feature-setup` | Create branch and documentation |
 | `feature-continue` | Resume with context restoration |
 | `feature-pr` | Commit, push, and create PR |
 | `feature-status` | Check PR status |
@@ -123,7 +144,7 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 | `ios-dev` | iOS/Xcode build configuration |
 | `web-dev` | Web/Next.js build configuration |
 
-Platform skills are automatically called by `feature-setup` based on project detection.
+Platform skills are automatically called during session setup based on project detection.
 
 ## Feature Documentation
 
@@ -137,7 +158,7 @@ During development, feature state is stored in `.devflows/sessions/<branch>/`:
 | `issues.md` | Review issues (append-only, tracked until PR merge) |
 | `build_baseline.log` | Initial warning count |
 
-This directory is created by `/devflows:exec` and deleted by `/devflows:feature-cleanup` after merge.
+Ideas are stored in `.devflows/ideas/<timestamp>-<slug>.md`.
 
 ## How It Works
 
@@ -145,7 +166,7 @@ On session start, the plugin automatically:
 
 1. Injects `global/rules.md` as `<devflows-rules>`
 2. Detects current branch and session status
-3. Suggests `/devflows:resume` or `/devflows:plan` based on context
+3. Suggests `/devflows:resume` or starting fresh based on context
 
 ```
 <devflows-rules>
@@ -160,6 +181,8 @@ STATUS: SESSION_EXISTS
 Existing session detected. Run /devflows:resume to resume work.
 </session-status>
 ```
+
+When Claude receives "Implement the following plan:" after plan approval, the Implementation Protocol in global rules kicks in automatically.
 
 ## Development
 
@@ -189,7 +212,7 @@ No hot reload available. After modifying files:
 In a session, verify the plugin is loaded:
 
 - `/help` - Check if skills are registered
-- Run `/devflows:plan` or `/devflows:resume` - Test skill execution
+- Run `/devflows:resume` or `/devflows:status` - Test skill execution
 - Check session start output for `<devflows-rules>` and `<session-status>`
 
 ## License

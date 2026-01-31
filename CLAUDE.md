@@ -22,10 +22,18 @@ devflows/
 │   ├── hooks.json      # Hook definitions
 │   └── session-start.sh
 │
+├── commands/           # User-invocable commands
+│   ├── idea.md
+│   ├── ideas.md
+│   ├── resume.md
+│   ├── status.md
+│   └── pr.md
+│
 └── skills/             # Workflow skills
-    ├── plan/
-    ├── exec/
+    ├── idea/           # Save idea for later
+    ├── ideas/          # List saved ideas
     ├── resume/
+    ├── status/         # Check progress
     ├── pr/
     ├── ios-dev/
     ├── web-dev/

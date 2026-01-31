@@ -20,10 +20,10 @@ The standard cycle for executing each step in feature development.
 │                                                      │          │
 │                                        ┌─────────────┘          │
 │                                        ▼                        │
-│                                 ┌─────────────┐                 │
-│                                 │   Update    │                 │
-│                                 │  Progress   │                 │
-│                                 └─────────────┘                 │
+│                              ┌──────────────────┐               │
+│                              │ Commit & Update  │               │
+│                              │    Progress      │               │
+│                              └──────────────────┘               │
 │                                        │                        │
 │                    ┌───────────────────┴───────────────────┐   │
 │                    ▼                                       ▼   │
@@ -32,6 +32,18 @@ The standard cycle for executing each step in feature development.
 │                    └──► Next Step              Review(loop)◄┘   │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Git Root Resolution
+
+**IMPORTANT: Always resolve git root first to ensure .devflows is found at the repository root (monorepo support).**
+
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ---
 
@@ -69,13 +81,13 @@ fi
 
 **Web (Prettier)**:
 ```bash
-source .devflows/build/config.sh
+source $GIT_ROOT/.devflows/build/config.sh
 eval "$FORMAT_CMD"
 ```
 
 ### 4. Build & Verify
 
-**IMPORTANT: Read `.devflows/build/config.sh` to determine the platform.**
+**IMPORTANT: Read `$GIT_ROOT/.devflows/build/config.sh` to determine the platform.**
 
 **iOS**:
 ```bash
@@ -94,7 +106,21 @@ eval "$FORMAT_CMD"
 | No issues | Continue |
 | Cannot fix | Stop and alert user |
 
-### 5. Update Progress
+### 5. Commit
+
+Commit the changes for this step with a descriptive message:
+
+```bash
+git add <changed files>
+git commit -m "<step description>"
+```
+
+Commit message guidelines:
+- Use imperative mood ("Add feature" not "Added feature")
+- Reference the step if helpful (e.g., "Step 2: Add user validation")
+- Keep it concise but descriptive
+
+### 6. Update Progress
 
 - Mark step as `completed` in `plan.md`
 - Add entry to Progress Log with date
@@ -201,7 +227,7 @@ The `/devflows:pr` skill will automatically run PR-level review before creating 
 
 **NEVER auto-fix.** Follow this flow:
 
-1. Record issues in `.devflows/sessions/<branch>/issues.md` (append)
+1. Record issues in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md` (append)
 2. Report issues to user with clear table format
 3. Wait for user decision:
    - "fix #1" → Fix specific issue

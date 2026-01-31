@@ -66,52 +66,85 @@ Detect the project's branching strategy:
 - Run format/lint commands
 - Check for new warnings
 
+## Workflow Philosophy
+
+devflows ensures quality and traceability in feature development:
+
+1. **Plan before code** - Use standard plan mode; no code changes without a plan
+2. **Track progress** - Session files record state; resume anytime
+3. **Review every step** - Each implementation step includes review & refactor
+4. **Build accountability** - Compare before/after builds; fix regressions
+5. **Format consistently** - Platform-specific formatting before commit
+6. **Structured PRs** - Follow project PR format conventions
+
 ## Feature Development Workflow
 
-This repository provides skills for structured feature development. Use the state-based guide below to determine which command to run.
+devflows integrates with Claude Code's standard plan mode. No special commands needed to start planning.
 
-### Workflow States
+### Flow
 
-| State | Indicators |
-|-------|------------|
-| `no-session` | No `.devflows/sessions/<branch>/` exists |
-| `planning` | In CC plan mode, session not yet created |
-| `implementing` | Session exists, steps incomplete |
-| `pr-ready` | All steps complete, PR not created |
-| `pr-open` | PR exists and is open |
+```
+1. User describes a feature → Claude enters plan mode naturally
+2. Planning discussion → ExitPlanMode → User approves
+3. "Implement the following plan:" triggers Implementation Protocol
+4. Session setup → Implementation loop → Ready for PR
+```
 
-### State → Command Mapping
+### Available Commands
 
-| Current State | Command | Next State |
-|---------------|---------|------------|
-| `no-session` | `/devflows:plan` | `planning` |
-| `planning` (plan approved) | `/devflows:exec` | `implementing` |
-| `implementing` | `/devflows:resume` | `implementing` |
-| `implementing` (all complete) | `/devflows:pr` | `pr-open` |
-| `pr-open` (merged) | cleanup | `no-session` |
+| Command | Purpose |
+|---------|---------|
+| `/devflows:idea` | Save current discussion as idea for later |
+| `/devflows:ideas` | List all saved ideas, select to view |
+| `/devflows:resume` | Resume existing session |
+| `/devflows:status` | Show implementation progress |
+| `/devflows:pr` | Create PR with format |
 
 ### Auto-Detection
 
-The session-start hook outputs status to help you decide:
+The session-start hook outputs status:
 
-- `STATUS: NO_SESSION` → suggest `/devflows:plan`
-- `STATUS: SESSION_EXISTS` → suggest `/devflows:resume`
+- `STATUS: NO_SESSION` → No active session; start planning or use `/devflows:ideas`
+- `STATUS: SESSION_EXISTS` → Session found; suggest `/devflows:resume`
 
-### Recovery Paths
+## Implementation Protocol
 
-| Situation | Action |
-|-----------|--------|
-| Build fails during implementation | Fix in current session, retry |
-| Need to revise plan | Edit `plan.md` directly, continue |
-| Abandon feature | Delete `.devflows/sessions/<branch>/`, delete branch |
+**CRITICAL:** When you receive "Implement the following plan:" after plan approval, follow this protocol.
 
-### /devflows:plan Command Behavior
+### 1. Session Setup (First Time Only)
 
-**CRITICAL:** When the `/devflows:plan` skill is invoked, you MUST call the `EnterPlanMode` tool IMMEDIATELY before doing anything else. Do not ask questions, explore the codebase, or display guidance first. Call EnterPlanMode first, then proceed with the skill.
+If `.devflows/sessions/<branch>/` doesn't exist:
 
-### .devflows/sessions/ Structure
+1. **Determine base branch** (see Git Conventions > Branching Strategy)
+2. **Create feature branch** if not already on one
+3. **Create session directory** with:
+   - `requirements.md` - Goal, base branch, full plan
+   - `plan.md` - Implementation checklist
+   - `notes.md` - Key decisions from planning
+4. **Run baseline build** using platform skill (ios-dev, web-dev, etc.)
+5. **Save baseline** to `build_baseline.log`
 
-Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
+### 2. Implementation Loop
+
+For each step in the plan:
+
+1. **Implement** the step
+2. **Review & Refactor** (run review skill)
+3. **Update progress** in `plan.md` (mark step complete)
+4. **Format code** (platform-specific)
+5. **Commit** with descriptive message
+
+### 3. Completion
+
+After all steps:
+
+1. **Run final build**
+2. **Compare to baseline** - fix any new errors/warnings
+3. **Announce** ready for `/devflows:pr`
+
+## Session Structure
+
+Feature state is stored in `.devflows/sessions/<branch_name>/`:
 
 | File                 | Purpose                                |
 | -------------------- | -------------------------------------- |
@@ -121,7 +154,15 @@ Feature documentation is stored in `.devflows/sessions/<branch_name>/`:
 | `issues.md`          | Review issues (append-only)            |
 | `build_baseline.log` | Initial build warnings                 |
 
-This directory is created by `/devflows:feature-setup` and deleted by `/devflows:feature-cleanup` after PR merge.
+Ideas are stored in `.devflows/ideas/<timestamp>-<slug>.md`.
+
+### Recovery Paths
+
+| Situation | Action |
+|-----------|--------|
+| Build fails during implementation | Fix in current session, retry |
+| Need to revise plan | Edit `plan.md` directly, continue |
+| Abandon feature | Delete `.devflows/sessions/<branch>/`, delete branch |
 
 ## Code Review
 
