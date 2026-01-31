@@ -10,9 +10,19 @@ Resume work on an existing feature.
 ## Auto-detection
 
 This skill can be triggered automatically on session start when:
-- Current branch has `.devflows/sessions/<current_branch>/` directory
+- Current branch has `.devflows/sessions/<current_branch>/` directory at git root
 
 ## Procedure
+
+### 0. Determine Git Root
+
+**IMPORTANT: Always resolve git root first to ensure .devflows is found at the repository root (monorepo support).**
+
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ### 1. Gather Context (Parallel)
 
@@ -23,10 +33,10 @@ Use Task tool to spawn 5 subagents **in a single message** (parallel execution):
 | Agent | Type | Task |
 |-------|------|------|
 | 1 | Bash | `gh pr list --head <branch_name> --state all --json number,state,reviewDecision,url` |
-| 2 | Bash | `cat .devflows/sessions/<branch>/requirements.md` |
-| 3 | Bash | `cat .devflows/sessions/<branch>/notes.md` |
-| 4 | Bash | `cat .devflows/sessions/<branch>/plan.md` |
-| 5 | Bash | `cat .devflows/sessions/<branch>/build_baseline.log` |
+| 2 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/requirements.md` |
+| 3 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/notes.md` |
+| 4 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/plan.md` |
+| 5 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/build_baseline.log` |
 
 Wait for all agents to complete, then process results.
 
@@ -77,7 +87,7 @@ Continue with Step 4?
 Run build to ensure current state is valid:
 
 ```bash
-source .devflows/build/config.sh
+source $GIT_ROOT/.devflows/build/config.sh
 $BUILD_CMD_LATEST
 ```
 

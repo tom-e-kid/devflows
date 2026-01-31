@@ -25,13 +25,25 @@ Called automatically by `implementation-loop` at different stages, or manually:
 
 ---
 
+## Git Root Resolution
+
+**IMPORTANT: Always resolve git root first to ensure .devflows is found at the repository root (monorepo support).**
+
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
+
+---
+
 ## Issue Management
 
 ### issues.md
 
-All detected issues are recorded in `.devflows/sessions/<branch>/issues.md`.
+All detected issues are recorded in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md`.
 
-**Location:** `.devflows/sessions/<current_branch>/issues.md`
+**Location:** `$GIT_ROOT/.devflows/sessions/<current_branch>/issues.md`
 
 **Rules:**
 - **APPEND only** - never overwrite existing entries
@@ -89,7 +101,7 @@ Display issues clearly:
 | 1 | high | `file.swift:42` | Hardcoded API key detected |
 | 2 | medium | `api.ts:15` | Missing error handling |
 
-These issues have been recorded in `.devflows/sessions/<branch>/issues.md`.
+These issues have been recorded in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md`.
 
 **What would you like to do?**
 - Tell me which issues to fix (e.g., "fix #1 and #2")
@@ -160,10 +172,10 @@ Checklist:
 
 ## Platform Detection
 
-Read `.devflows/build/config.sh` to determine platform:
+Read `$GIT_ROOT/.devflows/build/config.sh` to determine platform:
 
 ```bash
-source .devflows/build/config.sh
+source $GIT_ROOT/.devflows/build/config.sh
 echo $PLATFORM  # "ios" or "web"
 ```
 

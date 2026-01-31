@@ -1,6 +1,6 @@
 ---
 name: resume
-description: Resume work on an existing feature. Alias for /devflows:feature-continue.
+description: Resume work on an existing feature session
 ---
 
 # resume
@@ -13,7 +13,7 @@ Runs `/devflows:feature-continue` to:
 - Check PR status
 - Read saved documentation from `.devflows/sessions/<branch>/`
 - Summarize current progress
-- Resume implementation
+- Resume implementation from the next incomplete step
 
 ## Procedure
 
@@ -24,12 +24,12 @@ Execute the `/devflows:feature-continue` skill. This will:
 - Read requirements.md, notes.md, plan.md
 - Report current progress to user
 - Verify build state
-- Resume from where work left off
+- Resume from first incomplete step using implementation loop
 
 ---
 
 ## Notes
 
-- This skill is a simple alias for `/devflows:feature-continue`
+- This skill delegates to `/devflows:feature-continue` for the actual work
 - Use this when returning to an existing feature branch
-- Session-start hook will suggest this when `.devflows/sessions/<branch>/` exists
+- Session-start hook suggests this when `.devflows/sessions/<branch>/` exists

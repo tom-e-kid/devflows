@@ -16,9 +16,19 @@ Before running this skill:
 
 ## Procedure
 
+### 0. Determine Git Root
+
+**IMPORTANT: Always resolve git root first to ensure .devflows is found at the repository root (monorepo support).**
+
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
+
 ### 1. Verify Completion
 
-Check `.devflows/sessions/<current_branch>/plan.md`:
+Check `$GIT_ROOT/.devflows/sessions/<current_branch>/plan.md`:
 - All steps should be marked as completed
 - If not → Report and ask user how to proceed
 
@@ -47,7 +57,7 @@ Run comprehensive review before creating PR. Use the `review` skill at PR level:
 
 **If issues found:**
 
-1. Record in `.devflows/sessions/<branch>/issues.md` (append)
+1. Record in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md` (append)
 2. Report to user - **NEVER auto-fix**
 3. Wait for user decision before proceeding
 
@@ -67,7 +77,7 @@ Open: X | Fixed: Y | Won't fix: Z
 ```bash
 # Check CLAUDE.md for the specific command
 # Example: bun run format
-source .devflows/build/config.sh 2>/dev/null && eval "$FORMAT_CMD" || true
+source $GIT_ROOT/.devflows/build/config.sh 2>/dev/null && eval "$FORMAT_CMD" || true
 ```
 
 ### 4. Create Commit
@@ -113,7 +123,7 @@ No remote repository configured. Will merge locally:
 1. Switch to `<base_branch>`
 2. Merge `<branch_name>`
 3. Delete feature branch
-4. Delete `.devflows/sessions/<branch_name>/`
+4. Delete `$GIT_ROOT/.devflows/sessions/<branch_name>/`
 
 Proceed?
 ```
@@ -131,7 +141,7 @@ git merge <branch_name>
 git branch -d <branch_name>
 
 # Delete feature documentation
-rm -rf .devflows/sessions/<branch_name>/
+rm -rf $GIT_ROOT/.devflows/sessions/<branch_name>/
 ```
 
 #### Handle Merge Conflicts
@@ -155,7 +165,7 @@ If `git branch -d` fails (branch not fully merged):
 
 - Merged: `<branch_name>` → `<base_branch>`
 - Deleted branch: `<branch_name>`
-- Deleted: `.devflows/sessions/<branch_name>/`
+- Deleted: `$GIT_ROOT/.devflows/sessions/<branch_name>/`
 
 Ready for next feature!
 ```
@@ -174,7 +184,7 @@ git push -u origin <branch_name>
 
 #### Template Selection
 
-1. Check if `.devflows/pr/template.md` exists
+1. Check if `$GIT_ROOT/.devflows/pr/template.md` exists
 2. If exists → Follow its format and rules
 3. If not exists → Use default format below
 
@@ -209,7 +219,7 @@ EOF
 Report to user:
 - PR URL
 - Summary of changes
-- Reminder about `.devflows/sessions/<branch_name>/` cleanup (separate instruction)
+- Reminder about `$GIT_ROOT/.devflows/sessions/<branch_name>/` cleanup (separate instruction)
 
 ## Flow Overview
 
@@ -244,8 +254,8 @@ no remote   has remote
 ## Notes
 
 - Base branch is recorded in `requirements.md`
-- Follow project conventions for PR language (check CLAUDE.md or .devflows/pr/template.md)
+- Follow project conventions for PR language (check CLAUDE.md or $GIT_ROOT/.devflows/pr/template.md)
 - Write clearly so beginners can understand
-- For PR flow: Do NOT automatically delete `.devflows/sessions/<branch_name>/` - wait for user instruction
+- For PR flow: Do NOT automatically delete `$GIT_ROOT/.devflows/sessions/<branch_name>/` - wait for user instruction
 - For local merge flow: Session cleanup is included in the flow
 - Build verification is handled by `/devflows:implementation-loop`, not this skill

@@ -7,6 +7,9 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
 
+# Resolve git root for .devflows directory (monorepo support)
+GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+
 # Parse arguments
 SAVE_BASELINE=""
 while [[ $# -gt 0 ]]; do
@@ -22,7 +25,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Load config
-CONFIG_FILE=".devflows/build/config.sh"
+CONFIG_FILE="$GIT_ROOT/.devflows/build/config.sh"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "Error: $CONFIG_FILE not found. Run /web-dev first." >&2
     exit 1

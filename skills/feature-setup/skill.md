@@ -15,6 +15,16 @@ Set up feature branch and documentation after plan mode is complete.
 
 ## Procedure
 
+### 0. Determine Git Root
+
+**IMPORTANT: Always resolve git root first to ensure .devflows is created at the repository root, not in subdirectories (monorepo support).**
+
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
+
 ### 1. Determine Base Branch
 
 Detect the project's branching strategy and determine the base branch:
@@ -71,7 +81,7 @@ git checkout -b <feature_branch> origin/<base_branch>
 
 ### 4. Create Feature Documentation
 
-Create `.devflows/sessions/<branch_name>/` directory with:
+Create `$GIT_ROOT/.devflows/sessions/<branch_name>/` directory with:
 
 **requirements.md**
 ```markdown
@@ -138,12 +148,12 @@ Run a clean build to establish the baseline. Use the appropriate script based on
 
 **iOS**:
 ```bash
-.claude/skills/ios-dev/scripts/ios-build.sh latest --save-baseline .devflows/sessions/<branch_name>/build_baseline.log
+.claude/skills/ios-dev/scripts/ios-build.sh latest --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
 ```
 
 **Web**:
 ```bash
-.claude/skills/web-dev/scripts/web-build.sh --save-baseline .devflows/sessions/<branch_name>/build_baseline.log
+.claude/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
 ```
 
 Update `plan.md` with baseline status.
@@ -156,7 +166,7 @@ Update `plan.md` with baseline status.
 
 ```
 ✓ Branch: <branch_name>
-✓ Docs: .devflows/sessions/<branch_name>/
+✓ Docs: $GIT_ROOT/.devflows/sessions/<branch_name>/
 ✓ Build: OK (warnings: <count>)
 
 Starting implementation...

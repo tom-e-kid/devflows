@@ -14,14 +14,17 @@
 
 set -euo pipefail
 
-CONFIG_FILE=".devflows/build/config.sh"
+# Resolve git root for .devflows directory (monorepo support)
+GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+
+CONFIG_FILE="$GIT_ROOT/.devflows/build/config.sh"
 
 # Determine feature directory from current branch
 BRANCH_NAME=$(git branch --show-current 2>/dev/null || echo "")
-if [[ -n "$BRANCH_NAME" && -d ".devflows/sessions/$BRANCH_NAME" ]]; then
-    FEATURE_DIR=".devflows/sessions/$BRANCH_NAME"
+if [[ -n "$BRANCH_NAME" && -d "$GIT_ROOT/.devflows/sessions/$BRANCH_NAME" ]]; then
+    FEATURE_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH_NAME"
 else
-    FEATURE_DIR=".devflows/build"
+    FEATURE_DIR="$GIT_ROOT/.devflows/build"
 fi
 
 BUILD_LOG="$FEATURE_DIR/build_output.log"

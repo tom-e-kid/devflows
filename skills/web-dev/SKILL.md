@@ -15,16 +15,26 @@ Configure and verify build settings for Web/Next.js projects.
 - Called manually to reconfigure build settings
 - After Node.js or package manager updates
 
+## Git Root Resolution
+
+**IMPORTANT: Always resolve git root first to ensure .devflows is created at the repository root (monorepo support).**
+
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
+
 ## Behavior
 
-1. Check if `.devflows/build/config.sh` exists
+1. Check if `$GIT_ROOT/.devflows/build/config.sh` exists
 2. If exists:
    - Read and display current configuration
    - Ask user if they want to reconfigure
 3. If not exists (or reconfigure requested):
    - Run environment investigation using helper script
    - Present findings to user for confirmation
-   - Generate `.devflows/build/config.sh`
+   - Generate `$GIT_ROOT/.devflows/build/config.sh`
 
 ## Environment Investigation
 
@@ -52,7 +62,7 @@ Based on the output, ask user to confirm:
 
 ## Configuration File Format
 
-Generate `.devflows/build/config.sh`:
+Generate `$GIT_ROOT/.devflows/build/config.sh`:
 
 ```bash
 #!/bin/bash
@@ -145,7 +155,7 @@ BUILD_CMD="bun run --cwd apps/web build"
 
 ## Notes
 
-- `.devflows/build/config.sh` is local only (should be in .gitignore)
+- `$GIT_ROOT/.devflows/build/config.sh` is local only (should be in .gitignore)
 - Reconfigure when Node.js or package manager is updated
 - For Turborepo projects, always run commands from repo root
 - Check CLAUDE.md for project-specific command details
