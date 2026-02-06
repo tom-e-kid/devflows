@@ -29,9 +29,25 @@ echo "BRANCH: $BRANCH"
 
 if [[ -d "$SESSION_DIR" ]]; then
     echo "STATUS: SESSION_EXISTS"
+
+    # Extract goal from requirements.md
+    if [[ -f "$SESSION_DIR/requirements.md" ]]; then
+        GOAL=$(sed -n '/^## Goal/{n; /^$/d; p;}' "$SESSION_DIR/requirements.md" | head -3 | sed 's/^[[:space:]]*//' | tr '\n' ' ')
+        if [[ -n "$GOAL" ]]; then
+            echo "GOAL: $GOAL"
+        fi
+    fi
+
+    # Extract progress from plan.md (count completed vs total steps)
+    if [[ -f "$SESSION_DIR/plan.md" ]]; then
+        TOTAL=$(grep -cE '^\| [0-9]+' "$SESSION_DIR/plan.md" 2>/dev/null || echo "0")
+        COMPLETED=$(grep -cE '^\| [0-9]+.*completed' "$SESSION_DIR/plan.md" 2>/dev/null || echo "0")
+        echo "PROGRESS: $COMPLETED/$TOTAL steps"
+    fi
+
     echo ""
-    echo "Existing session detected. Run /devflows:resume to resume work."
-    echo "Or run /devflows:status to check progress."
+    echo "Active session detected for this branch."
+    echo "Run /devflows:resume to continue, or /devflows:status for details."
 else
     echo "STATUS: NO_SESSION"
     echo ""

@@ -1,35 +1,140 @@
 ---
 name: resume
-description: Resume work on an existing feature session
+description: Resume work on an existing feature session. Auto-detects current branch session or lets user select from session list.
 ---
 
 # resume
 
-Resume work on an existing feature.
+Resume work on an existing feature session.
 
-## What This Skill Does
+## Modes
 
-Runs `/devflows:feature-continue` to:
-- Check PR status
-- Read saved documentation from `.devflows/sessions/<branch>/`
-- Summarize current progress
-- Resume implementation from the next incomplete step
+This skill operates in two modes depending on context:
+
+- **Mode A (Auto-detected)**: Current branch has a session in `.devflows/sessions/` → skip selection, resume directly
+- **Mode B (Session selection)**: Current branch has no session → list all sessions, let user pick, switch branch, then resume
 
 ## Procedure
 
-### 1. Run /devflows:feature-continue
+### 0. Resolve Git Root
 
-Execute the `/devflows:feature-continue` skill. This will:
-- Check if a PR exists and its status
-- Read requirements.md, notes.md, plan.md
-- Report current progress to user
-- Verify build state
-- Resume from first incomplete step using implementation loop
+```bash
+GIT_ROOT=$(git rev-parse --show-toplevel)
+```
+
+All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
+
+### 1. Check for Auto-Detected Session
+
+```bash
+CURRENT_BRANCH=$(git branch --show-current)
+```
+
+Check if `$GIT_ROOT/.devflows/sessions/$CURRENT_BRANCH/` exists.
+
+- If **exists** → Mode A. Skip to step 3.
+- If **not exists** → Mode B. Continue to step 2.
+
+### 2. List Sessions and Select (Mode B)
+
+Scan `$GIT_ROOT/.devflows/sessions/` for subdirectories.
+
+```bash
+ls -1 $GIT_ROOT/.devflows/sessions/
+```
+
+- If **no sessions found** → report "No sessions to resume." and stop.
+- If **one or more found** → gather brief info for each session, then ask user to select.
+
+#### Gather Brief Info
+
+For each session directory `<branch_name>`:
+
+**Goal** — read from `requirements.md`:
+```bash
+# Extract first non-empty line after ## Goal
+```
+If `requirements.md` doesn't exist or has no goal, show "unknown".
+
+**Progress** — read from `plan.md`:
+```bash
+# Count completed vs total steps from the Steps table
+```
+If `plan.md` doesn't exist, show "unknown".
+
+#### Present List
+
+Display sessions with their info:
+
+```
+## Available Sessions
+
+| # | Branch | Goal | Progress |
+|---|--------|------|----------|
+| 1 | feature/dark-mode | Add dark mode toggle | 3/5 steps |
+| 2 | feature/auth | Implement OAuth login | 0/4 steps |
+```
+
+Ask user which session to resume using `AskUserQuestion`.
+
+#### Switch to Selected Branch
+
+After user selects a session:
+
+```bash
+git checkout <selected_branch>
+```
+
+If checkout fails (branch doesn't exist locally):
+
+1. Check if remote branch exists:
+   ```bash
+   git branch -r --list origin/<selected_branch>
+   ```
+2. If remote exists:
+   ```bash
+   git checkout -b <selected_branch> origin/<selected_branch>
+   ```
+3. If remote doesn't exist either:
+   - Report error: session files exist but the branch is gone
+   - Suggest running `/devflows:cleanup` to remove the orphaned session
+   - Stop
+
+### 3. Run feature-continue
+
+Execute `/devflows:feature-continue` to resume work on the now-current branch.
 
 ---
 
+## Edge Cases
+
+### No Sessions Exist
+
+If `.devflows/sessions/` is empty or doesn't exist, report "No sessions to resume." and stop.
+
+### Uncommitted Changes When Switching
+
+If there are uncommitted changes and a branch switch is needed (Mode B):
+
+1. Report what files are modified
+2. Ask user how to proceed:
+   - Stash changes and switch
+   - Abort (stay on current branch)
+
+### Branch Deleted But Session Exists
+
+If the selected session's branch doesn't exist locally or remotely:
+- Report the situation
+- Suggest `/devflows:cleanup` to remove the orphaned session files
+- Stop (don't try to resume without a branch)
+
+### requirements.md or plan.md Missing
+
+Show "unknown" for the missing info. The session can still be resumed — `feature-continue` will handle incomplete session files.
+
 ## Notes
 
-- This skill delegates to `/devflows:feature-continue` for the actual work
-- Use this when returning to an existing feature branch
-- Session-start hook suggests this when `.devflows/sessions/<branch>/` exists
+- Session list (`.devflows/sessions/`) is the source of truth for available sessions
+- Mode A is the fast path — no interaction needed, just resume
+- Mode B handles the case where user is on a different branch (e.g., `main`) and wants to return to a session
+- This skill delegates the actual resume work to `/devflows:feature-continue`
