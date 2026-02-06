@@ -108,6 +108,7 @@ description: Brief description shown in skill list
 
 ## Git Conventions
 
+- Always create a feature/fix branch before making changes—never commit directly to main
 - Branch: `feature/<description>` or `fix/<description>`
 - Commit messages: English, imperative mood
 - Keep changes focused and minimal
