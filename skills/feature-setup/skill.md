@@ -148,12 +148,12 @@ Run a clean build to establish the baseline. Use the appropriate script based on
 
 **iOS**:
 ```bash
-.claude/skills/ios-dev/scripts/ios-build.sh latest --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
 ```
 
 **Web**:
 ```bash
-.claude/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
 ```
 
 Update `plan.md` with baseline status.

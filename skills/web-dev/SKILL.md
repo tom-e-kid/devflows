@@ -41,11 +41,8 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 **IMPORTANT: Use the helper script instead of running individual commands.**
 
 ```bash
-# Get skill directory (via symlink in .claude/skills/)
-SKILL_DIR=".claude/skills/web-dev"
-
 # Gather all environment info in one command
-"$SKILL_DIR/scripts/web-env-info.sh"
+"${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-env-info.sh"
 ```
 
 This script outputs:
@@ -95,14 +92,14 @@ ERRORS_FILTER="grep -E '(error|Error|ERR)' | sort -u"
 
 ## Helper Scripts
 
-All scripts are located in `.claude/skills/web-dev/scripts/`.
+All scripts are located in `${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/`.
 
 ### web-env-info.sh
 
 Gathers environment information for configuration:
 
 ```bash
-.claude/skills/web-dev/scripts/web-env-info.sh [project_root]
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-env-info.sh [project_root]
 ```
 
 ### web-build.sh
@@ -110,7 +107,7 @@ Gathers environment information for configuration:
 Runs build and extracts errors/warnings:
 
 ```bash
-.claude/skills/web-dev/scripts/web-build.sh [--save-baseline <path>]
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh [--save-baseline <path>]
 ```
 
 ### web-verify.sh
@@ -118,7 +115,7 @@ Runs build and extracts errors/warnings:
 Runs lint, format check, and typecheck:
 
 ```bash
-.claude/skills/web-dev/scripts/web-verify.sh [--save-baseline <path>]
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-verify.sh [--save-baseline <path>]
 ```
 
 ## Monorepo Support

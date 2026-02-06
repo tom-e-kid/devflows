@@ -91,12 +91,12 @@ eval "$FORMAT_CMD"
 
 **iOS**:
 ```bash
-.claude/skills/ios-dev/scripts/ios-build.sh latest --incremental
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest --incremental
 ```
 
 **Web**:
 ```bash
-.claude/skills/web-dev/scripts/web-build.sh
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh
 ```
 
 | Result | Action |
@@ -165,8 +165,8 @@ Use Task tool to spawn 2 Bash subagents **in a single message** (parallel execut
 
 | Agent | Description | Command |
 |-------|-------------|---------|
-| 1 | iOS latest build | `.claude/skills/ios-dev/scripts/ios-build.sh latest` |
-| 2 | iOS minimum build | `.claude/skills/ios-dev/scripts/ios-build.sh minimum` |
+| 1 | iOS latest build | `${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest` |
+| 2 | iOS minimum build | `${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh minimum` |
 
 Skip Agent 2 if `MINIMUM_OS` is not configured in `config.sh`.
 
@@ -176,8 +176,8 @@ Use Task tool to spawn 2 Bash subagents **in a single message** (parallel execut
 
 | Agent | Description | Command |
 |-------|-------------|---------|
-| 1 | Web build | `.claude/skills/web-dev/scripts/web-build.sh` |
-| 2 | Web verify | `.claude/skills/web-dev/scripts/web-verify.sh` |
+| 1 | Web build | `${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh` |
+| 2 | Web verify | `${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-verify.sh` |
 
 Wait for both agents to complete, then aggregate results.
 
