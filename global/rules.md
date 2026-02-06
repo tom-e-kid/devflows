@@ -105,7 +105,11 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 The session-start hook outputs status:
 
 - `STATUS: NO_SESSION` → No active session; start planning or use `/devflows:ideas`
-- `STATUS: SESSION_EXISTS` → Session found; suggest `/devflows:resume`
+- `STATUS: SESSION_EXISTS` → Active session found on current branch
+  - Hook also provides `GOAL:` and `PROGRESS:` data
+  - **Proactively report** session status to user (branch, goal, progress)
+  - Offer to resume (`/devflows:resume`), check status (`/devflows:status`), or start something else
+  - Do NOT just echo "run /devflows:resume" — show the info immediately
 
 ## Implementation Protocol
 
