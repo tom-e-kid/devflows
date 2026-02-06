@@ -41,11 +41,8 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 **IMPORTANT: Use the helper script instead of running individual commands.**
 
 ```bash
-# Get skill directory (via symlink in .claude/skills/)
-SKILL_DIR=".claude/skills/ios-dev"
-
 # Gather all environment info in one command
-"$SKILL_DIR/scripts/ios-env-info.sh"
+"${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-env-info.sh"
 ```
 
 This script outputs:
@@ -94,14 +91,14 @@ WARNINGS_FILTER="grep -i 'warning:' | grep -v 'Metadata extraction skipped' | gr
 
 ## Helper Scripts
 
-All scripts are located in `.claude/skills/ios-dev/scripts/`.
+All scripts are located in `${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/`.
 
 ### ios-env-info.sh
 
 Gathers environment information for configuration:
 
 ```bash
-.claude/skills/ios-dev/scripts/ios-env-info.sh [workspace]
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-env-info.sh [workspace]
 ```
 
 ### ios-build.sh
@@ -109,7 +106,7 @@ Gathers environment information for configuration:
 Runs build and extracts warnings:
 
 ```bash
-.claude/skills/ios-dev/scripts/ios-build.sh [latest|minimum] [--save-baseline <path>]
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh [latest|minimum] [--save-baseline <path>]
 ```
 
 ### ios-warnings-diff.sh
@@ -117,7 +114,7 @@ Runs build and extracts warnings:
 Compares warnings against baseline:
 
 ```bash
-.claude/skills/ios-dev/scripts/ios-warnings-diff.sh <baseline_file> [current_warnings_file]
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-warnings-diff.sh <baseline_file> [current_warnings_file]
 ```
 
 ## Warning Baseline
