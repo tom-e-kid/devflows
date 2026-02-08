@@ -184,7 +184,7 @@ git push -u origin <branch_name>
 
 #### Template Selection
 
-1. Check if `$GIT_ROOT/.devflows/pr/template.md` exists
+1. Check if `$GIT_ROOT/.devflows/templates/pr.md` exists
 2. If exists → Follow its format and rules
 3. If not exists → Use default format below
 
@@ -254,7 +254,7 @@ no remote   has remote
 ## Notes
 
 - Base branch is recorded in `requirements.md`
-- Follow project conventions for PR language (check CLAUDE.md or $GIT_ROOT/.devflows/pr/template.md)
+- Follow project conventions for PR language (check CLAUDE.md or $GIT_ROOT/.devflows/templates/pr.md)
 - Write clearly so beginners can understand
 - For PR flow: Do NOT automatically delete `$GIT_ROOT/.devflows/sessions/<branch_name>/` - wait for user instruction
 - For local merge flow: Session cleanup is included in the flow

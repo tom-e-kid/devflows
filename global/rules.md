@@ -94,8 +94,8 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 
 | Command | Purpose |
 |---------|---------|
-| `/devflows:idea` | Save current discussion as idea for later |
-| `/devflows:ideas` | List all saved ideas, select to view |
+| `/devflows:issue` | Create a GitHub Issue from the current discussion |
+| `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume existing session |
 | `/devflows:status` | Show implementation progress |
 | `/devflows:pr` | Create PR with format |
@@ -104,7 +104,7 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 
 The session-start hook outputs status:
 
-- `STATUS: NO_SESSION` → No active session; start planning or use `/devflows:ideas`
+- `STATUS: NO_SESSION` → No active session; start planning or use `/devflows:issues`
 - `STATUS: SESSION_EXISTS` → Active session found on current branch
   - Hook also provides `GOAL:` and `PROGRESS:` data
   - **Proactively report** session status to user (branch, goal, progress)
@@ -157,8 +157,6 @@ Feature state is stored in `.devflows/sessions/<branch_name>/`:
 | `plan.md`            | Implementation checklist with progress |
 | `issues.md`          | Review issues (append-only)            |
 | `build_baseline.log` | Initial build warnings                 |
-
-Ideas are stored in `.devflows/ideas/<timestamp>-<slug>.md`.
 
 ### Recovery Paths
 
