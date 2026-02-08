@@ -32,14 +32,16 @@ devflows/
 ├── global/
 │   └── rules.md              # Cross-project rules (auto-injected)
 ├── commands/                 # User-invocable commands
-│   ├── idea.md
-│   ├── ideas.md
+│   ├── init.md
+│   ├── issue.md
+│   ├── issues.md
 │   ├── resume.md
 │   ├── status.md
 │   └── pr.md
 └── skills/
-    ├── idea/SKILL.md         # Save idea for later
-    ├── ideas/SKILL.md        # List saved ideas
+    ├── init/SKILL.md         # Initialize .devflows in a project
+    ├── issue/SKILL.md        # Create GitHub Issue
+    ├── issues/SKILL.md       # List and manage GitHub Issues
     ├── resume/SKILL.md       # Resume work
     ├── status/SKILL.md       # Check progress
     ├── pr/SKILL.md           # Create PR
@@ -120,8 +122,9 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 
 | Command | Description |
 |---------|-------------|
-| `/devflows:idea` | Save current discussion as idea for later |
-| `/devflows:ideas` | List all saved ideas, select to view |
+| `/devflows:init` | Initialize .devflows with templates and build config |
+| `/devflows:issue` | Create a GitHub Issue from the current discussion |
+| `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume work on existing feature |
 | `/devflows:status` | Show implementation progress |
 | `/devflows:pr` | Create pull request |
@@ -146,6 +149,29 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 
 Platform skills are automatically called during session setup based on project detection.
 
+## Customization
+
+### Templates
+
+Run `/devflows:init` in your project to scaffold the `.devflows/` directory with default templates:
+
+```
+$GIT_ROOT/.devflows/
+├── templates/              # Committed to repo
+│   ├── pr.md               # PR body format
+│   └── issue.md            # Issue body format (per-type sections inside)
+├── build/
+│   └── config.sh           # Platform build config (gitignored)
+└── sessions/<branch>/      # Session state (gitignored)
+```
+
+| Template | Purpose |
+|----------|---------|
+| `templates/pr.md` | Custom PR body format used by `/devflows:pr` |
+| `templates/issue.md` | Custom issue body format used by `/devflows:issue` — contains sections per type (idea, bug, refactor, improvement) |
+
+Templates are optional. If not present, built-in defaults are used.
+
 ## Feature Documentation
 
 During development, feature state is stored in `.devflows/sessions/<branch>/`:
@@ -157,8 +183,6 @@ During development, feature state is stored in `.devflows/sessions/<branch>/`:
 | `plan.md` | Implementation checklist |
 | `issues.md` | Review issues (append-only, tracked until PR merge) |
 | `build_baseline.log` | Initial warning count |
-
-Ideas are stored in `.devflows/ideas/<timestamp>-<slug>.md`.
 
 ## How It Works
 

@@ -23,15 +23,17 @@ devflows/
 │   └── session-start.sh
 │
 ├── commands/           # User-invocable commands
-│   ├── idea.md
-│   ├── ideas.md
+│   ├── init.md
+│   ├── issue.md
+│   ├── issues.md
 │   ├── resume.md
 │   ├── status.md
 │   └── pr.md
 │
 └── skills/             # Workflow skills
-    ├── idea/           # Save idea for later
-    ├── ideas/          # List saved ideas
+    ├── init/           # Initialize .devflows in a project
+    ├── issue/          # Create GitHub Issue
+    ├── issues/         # List and manage GitHub Issues
     ├── resume/
     ├── status/         # Check progress
     ├── pr/
