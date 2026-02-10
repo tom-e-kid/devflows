@@ -24,6 +24,7 @@ devflows/
 │
 ├── commands/           # User-invocable commands
 │   ├── init.md
+│   ├── start.md
 │   ├── issue.md
 │   ├── issues.md
 │   ├── resume.md

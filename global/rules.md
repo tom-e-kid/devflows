@@ -70,7 +70,7 @@ Detect the project's branching strategy:
 
 devflows ensures quality and traceability in feature development:
 
-1. **Plan before code** - Use standard plan mode; no code changes without a plan
+1. **Start with a session** - Use `/devflows:start` to create a trackable session
 2. **Track progress** - Session files record state; resume anytime
 3. **Review every step** - Each implementation step includes review & refactor
 4. **Build accountability** - Compare before/after builds; fix regressions
@@ -79,21 +79,21 @@ devflows ensures quality and traceability in feature development:
 
 ## Feature Development Workflow
 
-devflows integrates with Claude Code's standard plan mode. No special commands needed to start planning.
+devflows integrates with Claude Code's standard plan mode.
 
 ### Flow
 
 ```
-1. User describes a feature → Claude enters plan mode naturally
-2. Planning discussion → ExitPlanMode → User approves
-3. "Implement the following plan:" triggers Implementation Protocol
-4. Session setup → Implementation loop → Ready for PR
+1. User runs /devflows:start → creates branch, session, baseline
+2. Planning (optional) → plan mode or direct implementation
+3. Implementation (with implementation-loop) → /devflows:pr
 ```
 
 ### Available Commands
 
 | Command | Purpose |
 |---------|---------|
+| `/devflows:start` | Start a new feature session (branch + session + baseline) |
 | `/devflows:issue` | Create a GitHub Issue from the current discussion |
 | `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume existing session |
@@ -104,47 +104,19 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 
 The session-start hook outputs status:
 
-- `STATUS: NO_SESSION` → No active session; start planning or use `/devflows:issues`
+- `STATUS: NO_SESSION` → No active session; use `/devflows:start` to begin, or `/devflows:issues` to browse
 - `STATUS: SESSION_EXISTS` → Active session found on current branch
   - Hook also provides `GOAL:` and `PROGRESS:` data
   - **Proactively report** session status to user (branch, goal, progress)
   - Offer to resume (`/devflows:resume`), check status (`/devflows:status`), or start something else
   - Do NOT just echo "run /devflows:resume" — show the info immediately
 
-## Implementation Protocol
+## Implementation
 
-**CRITICAL:** When you receive "Implement the following plan:" after plan approval, follow this protocol.
+After starting a session with `/devflows:start`, implement using the implementation-loop skill:
 
-### 1. Session Setup (First Time Only)
-
-If `.devflows/sessions/<branch>/` doesn't exist:
-
-1. **Determine base branch** (see Git Conventions > Branching Strategy)
-2. **Create feature branch** if not already on one
-3. **Create session directory** with:
-   - `requirements.md` - Goal, base branch, full plan
-   - `plan.md` - Implementation checklist
-   - `notes.md` - Key decisions from planning
-4. **Run baseline build** using platform skill (ios-dev, web-dev, etc.)
-5. **Save baseline** to `build_baseline.log`
-
-### 2. Implementation Loop
-
-For each step in the plan:
-
-1. **Implement** the step
-2. **Review & Refactor** (run review skill)
-3. **Update progress** in `plan.md` (mark step complete)
-4. **Format code** (platform-specific)
-5. **Commit** with descriptive message
-
-### 3. Completion
-
-After all steps:
-
-1. **Run final build**
-2. **Compare to baseline** - fix any new errors/warnings
-3. **Announce** ready for `/devflows:pr`
+1. Each step: **Implement** → **Review & Refactor** → **Format** → **Build & Verify** → **Commit** → **Update progress**
+2. After all steps: Final review → Final build → Ready for `/devflows:pr`
 
 ## Session Structure
 
