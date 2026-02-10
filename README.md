@@ -13,7 +13,7 @@ devflows provides:
 
 devflows ensures quality and traceability in feature development:
 
-1. **Plan before code** - Use standard plan mode; no code changes without a plan
+1. **Start with a session** - Use `/devflows:start` to create a trackable session
 2. **Track progress** - Session files record state; resume anytime
 3. **Review every step** - Each implementation step includes review & refactor
 4. **Build accountability** - Compare before/after builds; fix regressions
@@ -33,6 +33,7 @@ devflows/
 │   └── rules.md              # Cross-project rules (auto-injected)
 ├── commands/                 # User-invocable commands
 │   ├── init.md
+│   ├── start.md
 │   ├── issue.md
 │   ├── issues.md
 │   ├── resume.md
@@ -86,19 +87,18 @@ For project-specific rules, create `.claude/CLAUDE.md` in your project:
 
 ## Workflow
 
-devflows integrates with Claude Code's standard plan mode. No special commands needed to start planning.
+devflows integrates with Claude Code's standard plan mode.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Standard Plan Mode                            │
-│  "Let's implement X" → Claude enters plan mode naturally         │
-│  Discuss requirements → Create plan → User approves              │
+│                    /devflows:start                                │
+│  Create branch → Session directory → Baseline build              │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Implementation Protocol                        │
-│  Session setup → Baseline build → Save plan to .devflows/        │
+│                  Planning (Optional)                              │
+│  Enter plan mode → Discuss requirements → Approve plan           │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -123,6 +123,7 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 | Command | Description |
 |---------|-------------|
 | `/devflows:init` | Initialize .devflows with templates and build config |
+| `/devflows:start` | Start a new feature session (branch + session + baseline) |
 | `/devflows:issue` | Create a GitHub Issue from the current discussion |
 | `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume work on existing feature |
@@ -133,6 +134,7 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 
 | Skill | Description |
 |-------|-------------|
+| `feature-start` | Create branch, session, and baseline build |
 | `review` | Multi-level code review (step/loop/pr) |
 | `feature-continue` | Resume with context restoration |
 | `feature-pr` | Commit, push, and create PR |
@@ -147,7 +149,7 @@ devflows integrates with Claude Code's standard plan mode. No special commands n
 | `ios-dev` | iOS/Xcode build configuration |
 | `web-dev` | Web/Next.js build configuration |
 
-Platform skills are automatically called during session setup based on project detection.
+Platform skills are called by `/devflows:start` during session setup based on project detection.
 
 ## Customization
 
@@ -206,7 +208,7 @@ Existing session detected. Run /devflows:resume to resume work.
 </session-status>
 ```
 
-When Claude receives "Implement the following plan:" after plan approval, the Implementation Protocol in global rules kicks in automatically.
+Use `/devflows:start` to create a session, then implement with the implementation-loop skill.
 
 ## Development
 

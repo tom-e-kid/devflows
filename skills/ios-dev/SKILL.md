@@ -11,7 +11,7 @@ Configure and verify Xcode build settings for iOS projects.
 
 ## When to Use
 
-- Called by `/devflows:feature-setup` when iOS project detected (`*.xcworkspace` or `*.xcodeproj`)
+- Called by `/devflows:feature-start` when iOS project detected (`*.xcworkspace` or `*.xcodeproj`)
 - Called manually to reconfigure build settings
 - After Xcode or simulator updates
 

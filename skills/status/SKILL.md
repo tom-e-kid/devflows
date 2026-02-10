@@ -33,7 +33,7 @@ If session directory doesn't exist, display:
 ```
 No active session for branch: <branch>
 
-To start a new feature, describe what you want to implement and I'll enter plan mode.
+To start a new feature, run /devflows:start or describe what you want to implement.
 ```
 
 And stop.

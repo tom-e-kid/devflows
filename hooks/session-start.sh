@@ -51,8 +51,7 @@ if [[ -d "$SESSION_DIR" ]]; then
 else
     echo "STATUS: NO_SESSION"
     echo ""
-    echo "No active session. Describe what you want to implement to start planning."
-    echo "Or run /devflows:issues to browse open issues."
+    echo "No active session. Run /devflows:start to begin, or /devflows:issues to browse issues."
 fi
 
 echo "</session-status>"

@@ -11,7 +11,7 @@ Configure and verify build settings for Web/Next.js projects.
 
 ## When to Use
 
-- Called by `/devflows:feature-setup` when web project detected (`package.json`)
+- Called by `/devflows:feature-start` when web project detected (`package.json`)
 - Called manually to reconfigure build settings
 - After Node.js or package manager updates
 
