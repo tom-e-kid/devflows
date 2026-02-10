@@ -128,7 +128,9 @@ devflows integrates with Claude Code's standard plan mode.
 | `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume work on existing feature |
 | `/devflows:status` | Show implementation progress |
+| `/devflows:review` | Run code review on current changes |
 | `/devflows:pr` | Create pull request |
+| `/devflows:cleanup` | Clean up session files and local branch after merge |
 
 ### Internal Skills
 
