@@ -61,7 +61,7 @@ Copy default `.swift-format` to project root if not already present:
 
 ```bash
 if [ ! -f "$GIT_ROOT/.swift-format" ]; then
-    cp "${CLAUDE_PLUGIN_ROOT}/skills/init/defaults/.swift-format" "$GIT_ROOT/.swift-format"
+    cp "${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/.swift-format" "$GIT_ROOT/.swift-format"
 fi
 ```
 
