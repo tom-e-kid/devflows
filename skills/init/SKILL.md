@@ -61,7 +61,7 @@ Copy default `.swift-format` to project root if not already present:
 
 ```bash
 if [ ! -f "$GIT_ROOT/.swift-format" ]; then
-    cp "${CLAUDE_PLUGIN_ROOT}/skills/init/defaults/.swift-format" "$GIT_ROOT/.swift-format"
+    cp "${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/.swift-format" "$GIT_ROOT/.swift-format"
 fi
 ```
 
@@ -151,9 +151,17 @@ Display the following summary to the user:
 
 Edit templates in .devflows/templates/ to customize PR and issue formats.
 Build config placeholders (<...>) should be filled in — or run /devflows:ios-dev or /devflows:web-dev to auto-detect.
+
+### Next Steps
+
+| Command | Description |
+|---------|-------------|
+| `/devflows:issue` | Create a GitHub Issue to plan your work |
+| `/devflows:start` | Start a new feature session (branch + session directory) |
+| `/devflows:issues` | List and manage existing GitHub Issues |
 ```
 
-If build config was skipped, omit the `config.sh` line and the build config note from the summary.
+If build config was skipped, omit the `config.sh` line, the `.swift-format` line, and the build config note from the summary.
 
 ## Notes
 
