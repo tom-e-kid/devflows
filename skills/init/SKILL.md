@@ -57,6 +57,16 @@ If the user selected a platform, write the following scaffold to `$GIT_ROOT/.dev
 
 **For iOS:**
 
+Copy default `.swift-format` to project root if not already present:
+
+```bash
+if [ ! -f "$GIT_ROOT/.swift-format" ]; then
+    cp "${CLAUDE_PLUGIN_ROOT}/skills/init/defaults/.swift-format" "$GIT_ROOT/.swift-format"
+fi
+```
+
+Generate config:
+
 ```bash
 #!/bin/bash
 # iOS Build Configuration
@@ -83,6 +93,10 @@ BUILD_CMD_MINIMUM="xcodebuild -workspace \"$WORKSPACE\" -scheme \"$SCHEME\" -des
 
 # Warning filter (excludes noise)
 WARNINGS_FILTER="grep -i 'warning:' | grep -v 'Metadata extraction skipped' | grep -v 'Could not get trait set' | sort -u"
+
+# Format commands
+FORMAT_CMD="git diff --name-only --diff-filter=AM | grep '\\.swift$' | xargs -I {} swift-format -i {}"
+FORMAT_CHECK_CMD="git diff --name-only --diff-filter=AM | grep '\\.swift$' | xargs -I {} swift-format --strict -m {} 2>&1"
 ```
 
 **For Web:**
@@ -132,6 +146,8 @@ Display the following summary to the user:
 ├── build/
 │   └── config.sh      ← [platform] build config (edit placeholders)
 └── sessions/
+
+.swift-format              ← (iOS only) swift-format config (4-space indent, 120 line length)
 
 Edit templates in .devflows/templates/ to customize PR and issue formats.
 Build config placeholders (<...>) should be filled in — or run /devflows:ios-dev or /devflows:web-dev to auto-detect.

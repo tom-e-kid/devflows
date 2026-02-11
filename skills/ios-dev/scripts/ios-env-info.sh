@@ -58,4 +58,20 @@ echo "## Available Simulators"
 xcrun simctl list devices available 2>/dev/null | grep -E "(-- iOS|iPhone|iPad)" | head -30 || echo "(none found)"
 echo ""
 
+# Code formatting
+echo "## Code Formatting"
+if command -v swift-format &> /dev/null; then
+    echo "swift-format: $(swift-format --version 2>/dev/null || echo 'installed')"
+else
+    echo "swift-format: NOT FOUND"
+    echo "  Install: brew install swift-format"
+fi
+GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+if [ -f "$GIT_ROOT/.swift-format" ]; then
+    echo "Config: $GIT_ROOT/.swift-format (exists)"
+else
+    echo "Config: No .swift-format found (will use defaults)"
+fi
+echo ""
+
 echo "=== End of Environment Information ==="

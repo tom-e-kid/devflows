@@ -87,6 +87,10 @@ BUILD_CMD_MINIMUM="xcodebuild -workspace \"$WORKSPACE\" -scheme \"$SCHEME\" -des
 
 # Warning filter (excludes noise)
 WARNINGS_FILTER="grep -i 'warning:' | grep -v 'Metadata extraction skipped' | grep -v 'Could not get trait set' | sort -u"
+
+# Format commands
+FORMAT_CMD="git diff --name-only --diff-filter=AM | grep '\\.swift$' | xargs -I {} swift-format -i {}"
+FORMAT_CHECK_CMD="git diff --name-only --diff-filter=AM | grep '\\.swift$' | xargs -I {} swift-format --strict -m {} 2>&1"
 ```
 
 ## Helper Scripts

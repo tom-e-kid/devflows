@@ -70,14 +70,21 @@ Run comprehensive review before creating PR. Use the `review` skill at PR level:
 Open: X | Fixed: Y | Won't fix: Z
 ```
 
-### 3. Format Before Commit (REQUIRED for Web)
+### 3. Format Before Commit (REQUIRED)
 
-**Web projects**: Run format command before committing.
+Run format command before committing.
 
 ```bash
-# Check CLAUDE.md for the specific command
-# Example: bun run format
-source $GIT_ROOT/.devflows/build/config.sh 2>/dev/null && eval "$FORMAT_CMD" || true
+source $GIT_ROOT/.devflows/build/config.sh 2>/dev/null
+
+if [ -n "${FORMAT_CMD:-}" ]; then
+    eval "$FORMAT_CMD"
+elif [ "${PLATFORM:-}" = "ios" ]; then
+    # Fallback for projects initialized before FORMAT_CMD was added
+    if command -v swift-format &> /dev/null; then
+        git diff --name-only --diff-filter=AM | grep '\.swift$' | xargs -I {} swift-format -i {}
+    fi
+fi
 ```
 
 ### 4. Create Commit

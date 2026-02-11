@@ -72,17 +72,17 @@ Skip detailed review if confident in the change. Save thorough review for loop-l
 
 Run the project's format command before building.
 
-**iOS (swift-format)**:
-```bash
-if command -v swift-format &> /dev/null; then
-    git diff --name-only --diff-filter=AM | grep '\.swift$' | xargs -I {} swift-format -i {}
-fi
-```
-
-**Web (Prettier)**:
 ```bash
 source $GIT_ROOT/.devflows/build/config.sh
-eval "$FORMAT_CMD"
+
+if [ -n "${FORMAT_CMD:-}" ]; then
+    eval "$FORMAT_CMD"
+elif [ "$PLATFORM" = "ios" ]; then
+    # Fallback for projects initialized before FORMAT_CMD was added
+    if command -v swift-format &> /dev/null; then
+        git diff --name-only --diff-filter=AM | grep '\.swift$' | xargs -I {} swift-format -i {}
+    fi
+fi
 ```
 
 ### 4. Build & Verify
