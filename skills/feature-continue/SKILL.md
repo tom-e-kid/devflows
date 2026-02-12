@@ -28,15 +28,14 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 **IMPORTANT: Run PR check and file reads in parallel using subagents for efficiency.**
 
-Use Task tool to spawn 5 subagents **in a single message** (parallel execution):
+Use Task tool to spawn 4 subagents **in a single message** (parallel execution):
 
 | Agent | Type | Task |
 |-------|------|------|
 | 1 | Bash | `gh pr list --head <branch_name> --state all --json number,state,reviewDecision,url` |
-| 2 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/requirements.md` |
-| 3 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/notes.md` |
-| 4 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/plan.md` |
-| 5 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/build_baseline.log` |
+| 2 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/plan.md` |
+| 3 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/tasks.md` |
+| 4 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/build_baseline.log` |
 
 Wait for all agents to complete, then process results.
 
@@ -56,30 +55,30 @@ If PR is merged, skip to cleanup flow instead of resuming development.
 
 ### 3. Summarize Status to User
 
-Use Agents 2-5 results to understand the feature:
+Use Agents 2-4 results to understand the feature:
 
 Report:
-- What the feature is about
-- What steps are completed
-- What step is next
-- Any blockers or questions noted
+- What the feature is about (from `plan.md` Goal)
+- What tasks are completed (from `tasks.md`)
+- What task is next
+- Any important context (from `plan.md` Context section)
 
 Example:
 ```
 ## Resuming: <branch_name>
 
-**Goal**: <from requirements.md>
+**Goal**: <from plan.md>
 
-**Progress**: 3/5 steps completed
-- ✅ Step 1: ...
-- ✅ Step 2: ...
-- ✅ Step 3: ...
-- ⬜ Step 4: ... (next)
-- ⬜ Step 5: ...
+**Progress**: 3/5 tasks completed
+- ✅ Task 1: ...
+- ✅ Task 2: ...
+- ✅ Task 3: ...
+- ⬜ Task 4: ... (next)
+- ⬜ Task 5: ...
 
-**Notes**: <any important context>
+**Context**: <key decisions from plan.md>
 
-Continue with Step 4?
+Continue with Task 4?
 ```
 
 ### 4. Verify Build State
@@ -116,12 +115,12 @@ If there are uncommitted changes:
 
 If user wants to modify the plan:
 1. Discuss changes
-2. Update `plan.md` and `notes.md`
+2. Update `plan.md` and `tasks.md`
 3. Proceed with revised plan
 
 ## Notes
 
-- Always read ALL documentation files before starting
-- Keep `plan.md` updated with progress
-- Document any new decisions in `notes.md`
-- Each step must result in a successful clean build
+- Always read ALL session files before starting
+- Keep `tasks.md` updated with progress
+- Document any new decisions in `plan.md` Context section
+- Each task must result in a successful clean build

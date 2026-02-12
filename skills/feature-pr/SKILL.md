@@ -10,7 +10,7 @@ Complete a feature branch by creating a Pull Request or merging locally.
 ## Prerequisites
 
 Before running this skill:
-- All steps in `plan.md` should be completed
+- All tasks in `tasks.md` should be completed
 - User review should be passed
 - Build verification should be done via `/devflows:implementation-loop` (this skill does NOT run builds)
 
@@ -28,8 +28,8 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ### 1. Verify Completion
 
-Check `$GIT_ROOT/.devflows/sessions/<current_branch>/plan.md`:
-- All steps should be marked as completed
+Check `$GIT_ROOT/.devflows/sessions/<current_branch>/tasks.md`:
+- All tasks should be marked as completed
 - If not → Report and ask user how to proceed
 
 ### 2. PR-Level Review (Deep)
@@ -199,17 +199,17 @@ git push -u origin <branch_name>
 
 ```markdown
 ## Summary
-<Summarize the goal from requirements.md>
+<Summarize the goal from plan.md>
 
 ## Changes
-<Summarize the steps from plan.md>
+<Summarize the tasks from tasks.md>
 
 ## Testing
 - [ ] Build verification (Latest OS)
 - [ ] Build verification (Minimum OS)
 
 ## Notes
-<Important decisions from notes.md>
+<Important context from plan.md Context section>
 ```
 
 #### Create PR Command
@@ -260,7 +260,7 @@ no remote   has remote
 
 ## Notes
 
-- Base branch is recorded in `requirements.md`
+- Base branch is recorded in `plan.md`
 - Follow project conventions for PR language (check CLAUDE.md or $GIT_ROOT/.devflows/templates/pr.md)
 - Write clearly so beginners can understand
 - For PR flow: Do NOT automatically delete `$GIT_ROOT/.devflows/sessions/<branch_name>/` - wait for user instruction

@@ -94,6 +94,8 @@ devflows integrates with Claude Code's standard plan mode.
 | Command | Purpose |
 |---------|---------|
 | `/devflows:start` | Start a new feature session (branch + session + baseline) |
+| `/devflows:memo` | Save conversation context (goals, decisions, tasks) to session files |
+| `/devflows:loop` | Start implementing — picks up from current session state |
 | `/devflows:issue` | Create a GitHub Issue from the current discussion |
 | `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume existing session |
@@ -113,29 +115,28 @@ The session-start hook outputs status:
 
 ## Implementation
 
-After starting a session with `/devflows:start`, implement using the implementation-loop skill:
+After starting a session with `/devflows:start`, implement using `/devflows:loop` (or the implementation-loop skill directly):
 
-1. Each step: **Implement** → **Review & Refactor** → **Format** → **Build & Verify** → **Commit** → **Update progress**
-2. After all steps: Final review → Final build → Ready for `/devflows:pr`
+1. Each task: **Implement** → **Review & Refactor** → **Format** → **Build & Verify** → **Commit** → **Update progress**
+2. After all tasks: Final review → Final build → Ready for `/devflows:pr`
 
 ## Session Structure
 
 Feature state is stored in `.devflows/sessions/<branch_name>/`:
 
-| File                 | Purpose                                |
-| -------------------- | -------------------------------------- |
-| `requirements.md`    | Goal, base branch, full plan           |
-| `notes.md`           | Key decisions and context              |
-| `plan.md`            | Implementation checklist with progress |
-| `issues.md`          | Review issues (append-only)            |
-| `build_baseline.log` | Initial build warnings                 |
+| File                 | Purpose                                         |
+| -------------------- | ----------------------------------------------- |
+| `plan.md`            | Goal, base branch, context, approach            |
+| `tasks.md`           | Task list with status + progress log            |
+| `issues.md`          | Review issues (append-only)                     |
+| `build_baseline.log` | Initial build warnings                          |
 
 ### Recovery Paths
 
 | Situation | Action |
 |-----------|--------|
 | Build fails during implementation | Fix in current session, retry |
-| Need to revise plan | Edit `plan.md` directly, continue |
+| Need to revise plan | Edit `plan.md` and `tasks.md` directly, or use `/devflows:memo` |
 | Abandon feature | Delete `.devflows/sessions/<branch>/`, delete branch |
 
 ## Code Review

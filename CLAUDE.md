@@ -25,6 +25,8 @@ devflows/
 ├── commands/           # User-invocable commands
 │   ├── init.md
 │   ├── start.md
+│   ├── memo.md
+│   ├── loop.md
 │   ├── issue.md
 │   ├── issues.md
 │   ├── resume.md
@@ -33,6 +35,8 @@ devflows/
 │
 └── skills/             # Workflow skills
     ├── init/           # Initialize .devflows in a project
+    ├── memo/           # Save context to session files
+    ├── loop/           # Smart implementation entry point
     ├── issue/          # Create GitHub Issue
     ├── issues/         # List and manage GitHub Issues
     ├── resume/

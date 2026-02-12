@@ -34,6 +34,8 @@ devflows/
 ├── commands/                 # User-invocable commands
 │   ├── init.md
 │   ├── start.md
+│   ├── memo.md
+│   ├── loop.md
 │   ├── issue.md
 │   ├── issues.md
 │   ├── resume.md
@@ -41,6 +43,8 @@ devflows/
 │   └── pr.md
 └── skills/
     ├── init/SKILL.md         # Initialize .devflows in a project
+    ├── memo/SKILL.md         # Save context to session files
+    ├── loop/SKILL.md         # Smart implementation entry point
     ├── issue/SKILL.md        # Create GitHub Issue
     ├── issues/SKILL.md       # List and manage GitHub Issues
     ├── resume/SKILL.md       # Resume work
@@ -97,14 +101,20 @@ devflows integrates with Claude Code's standard plan mode.
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                  Planning (Optional)                              │
+│              Think, plan, discuss...                              │
 │  Enter plan mode → Discuss requirements → Approve plan           │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Implementation Loop                            │
-│  Implement → Review → Update Progress → Format → Commit          │
+│                    /devflows:memo                                 │
+│  Save context → Goals, decisions, tasks to session files         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    /devflows:loop                                 │
+│  Pick up tasks → Implementation Loop → Review → Commit           │
 └─────────────────────────────────────────────────────────────────┘
                               │
             ┌─────────────────┴─────────────────┐
@@ -124,6 +134,8 @@ devflows integrates with Claude Code's standard plan mode.
 |---------|-------------|
 | `/devflows:init` | Initialize .devflows with templates and build config |
 | `/devflows:start` | Start a new feature session (branch + session + baseline) |
+| `/devflows:memo` | Save conversation context (goals, decisions, tasks) to session files |
+| `/devflows:loop` | Start implementing — picks up from current session state |
 | `/devflows:issue` | Create a GitHub Issue from the current discussion |
 | `/devflows:issues` | List and manage GitHub Issues |
 | `/devflows:resume` | Resume work on existing feature |
@@ -137,12 +149,14 @@ devflows integrates with Claude Code's standard plan mode.
 | Skill | Description |
 |-------|-------------|
 | `feature-start` | Create branch, session, and baseline build |
+| `memo` | Save conversation context to session files |
+| `loop` | Smart implementation entry point with graceful degradation |
 | `review` | Multi-level code review (step/loop/pr) |
 | `feature-continue` | Resume with context restoration |
 | `feature-pr` | Commit, push, and create PR |
 | `feature-status` | Check PR status |
 | `feature-cleanup` | Clean up after merge |
-| `implementation-loop` | Step-by-step implementation cycle |
+| `implementation-loop` | Task-by-task implementation cycle |
 
 ### Platform Skills
 
@@ -182,9 +196,8 @@ During development, feature state is stored in `.devflows/sessions/<branch>/`:
 
 | File | Purpose |
 |------|---------|
-| `requirements.md` | Goal and full plan |
-| `notes.md` | Key decisions and context |
-| `plan.md` | Implementation checklist |
+| `plan.md` | Goal, base branch, context, approach |
+| `tasks.md` | Task list with status + progress log |
 | `issues.md` | Review issues (append-only, tracked until PR merge) |
 | `build_baseline.log` | Initial warning count |
 

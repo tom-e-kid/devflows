@@ -51,7 +51,7 @@ Determine what context is available from the current conversation:
 
 | Context Available | Action |
 |-------------------|--------|
-| Plan exists (plan mode was used, steps exist) | Capture goal, plan steps, and notes |
+| Plan exists (plan mode was used, steps exist) | Capture goal, plan content, and context |
 | Goal but no formal plan (user described what they want) | Capture the goal, leave plan empty |
 | No context (user ran `/devflows:start` with no prior discussion) | Ask user for a brief description of the feature |
 
@@ -113,11 +113,11 @@ git checkout -b <feature_branch> origin/<base_branch>
 
 Create `$GIT_ROOT/.devflows/sessions/<branch_name>/` directory with:
 
-**requirements.md**
+**plan.md**
 
 If a plan exists:
 ```markdown
-# Requirements
+# Plan
 
 ## Goal
 <summarized goal from conversation>
@@ -125,16 +125,16 @@ If a plan exists:
 ## Base Branch
 <base_branch>
 
-## Plan
-<full plan content>
+## Context
+<important decisions from discussion, relevant context, references>
 
-## Created
-<date>
+## Approach
+<full plan content — how we'll tackle it, architecture notes>
 ```
 
 If no plan:
 ```markdown
-# Requirements
+# Plan
 
 ## Goal
 <summarized goal or brief description from user>
@@ -142,60 +142,36 @@ If no plan:
 ## Base Branch
 <base_branch>
 
-## Plan
-No formal plan yet. Use plan mode to create one, or start implementing directly.
-
-## Created
-<date>
-```
-
-**notes.md**
-```markdown
-# Notes
-
-## Key Decisions
-<important decisions from discussion, or "None yet">
-
 ## Context
-<relevant context from conversation>
+No context yet.
 
-## References
-<relevant files, links, etc.>
+## Approach
+No formal plan yet. Use `/devflows:memo` to save context, or start implementing directly.
 ```
 
-**plan.md**
+**tasks.md**
 
 If a plan exists:
 ```markdown
-# Plan
+# Tasks
 
-## Baseline Warnings
-<to be filled after build>
-
-## Steps
-
-| # | Description | Status |
-|---|-------------|--------|
+| # | Task | Status |
+|---|------|--------|
 | 1 | ... | pending |
 | 2 | ... | pending |
 
-## Progress Log
+## Log
 - <date>: Session started
 ```
 
 If no plan:
 ```markdown
-# Plan
+# Tasks
 
-## Baseline Warnings
-<to be filled after build>
+No tasks defined yet. Use `/devflows:memo` to capture tasks from the conversation, or add tasks manually.
 
-## Steps
-
-No steps defined yet. Create a plan using plan mode, or add steps manually.
-
-## Progress Log
-- <date>: Session started (no plan)
+## Log
+- <date>: Session started (no tasks)
 ```
 
 ### 7. Build Configuration Check
@@ -225,9 +201,9 @@ ${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest --save-baseline
 ${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
 ```
 
-Update `plan.md` with baseline warning count.
+Update `plan.md` Context section with baseline warning count and `tasks.md` Log with build result.
 
-If no platform detected, skip and note in `plan.md`: "No build baseline (no platform detected)".
+If no platform detected, skip and note in `plan.md` Context: "No build baseline (no platform detected)".
 
 If build fails, report the error and ask user how to proceed.
 
@@ -239,10 +215,11 @@ If build fails, report the error and ask user how to proceed.
 - Branch: <branch_name> (from <base_branch>)
 - Session: .devflows/sessions/<branch_name>/
 - Build baseline: <OK (warnings: N) / skipped / failed>
-- Plan: <N steps defined / no plan yet>
+- Tasks: <N tasks defined / no tasks yet>
 
 ### Next Steps
-- Start implementing → implementation-loop will guide you through each step
+- Start implementing → `/devflows:loop` picks up tasks and runs implementation-loop
+- Save context first → `/devflows:memo` captures goals, decisions, and tasks from the conversation
 - Need a plan first → enter plan mode to design the implementation
 - Check status → /devflows:status
 ```
@@ -254,7 +231,7 @@ If build fails, report the error and ask user how to proceed.
 ## Notes
 
 - This skill works with or without a prior plan — session files are useful either way
-- If user later creates a plan, they can update plan.md or the implementation-loop will prompt for steps
+- If user later creates a plan, they can use `/devflows:memo` to update plan.md and tasks.md
 - Build baseline can be re-run later via platform skills if skipped initially
 - Documentation should follow project language conventions (check CLAUDE.md)
-- Always copy the full plan content into requirements.md (do not reference external files)
+- Always copy the full plan content into plan.md (do not reference external files)
