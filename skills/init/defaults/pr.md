@@ -1,12 +1,12 @@
 ## Summary
-<Summarize the goal from requirements.md>
+<Summarize the goal from plan.md>
 
 ## Changes
-<Summarize the steps from plan.md>
+<Summarize the tasks from tasks.md>
 
 ## Testing
 - [ ] Build verification (Latest OS)
 - [ ] Build verification (Minimum OS)
 
 ## Notes
-<Important decisions from notes.md>
+<Important context from plan.md Context section>

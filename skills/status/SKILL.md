@@ -9,9 +9,9 @@ Show the current progress of the feature implementation.
 
 ## What This Skill Does
 
-1. Reads the current session's `plan.md`
-2. Displays progress (completed/total steps)
-3. Lists pending steps
+1. Reads the current session's `tasks.md` for progress and `plan.md` for summary
+2. Displays progress (completed/total tasks)
+3. Lists pending tasks
 
 ## Procedure
 
@@ -38,27 +38,26 @@ To start a new feature, run /devflows:start or describe what you want to impleme
 
 And stop.
 
-### 3. Read Plan
+### 3. Read Session Files
 
-Read `$SESSION_DIR/plan.md` and parse the steps table.
+Read `$SESSION_DIR/tasks.md` for progress and `$SESSION_DIR/plan.md` for goal/summary.
 
 ### 4. Display Progress
 
 ```
 ## Feature Status: <branch>
 
-**Progress**: <completed>/<total> steps
+**Goal**: <from plan.md>
+
+**Progress**: <completed>/<total> tasks
 
 ### Completed
-- ✅ Step 1: <description>
-- ✅ Step 2: <description>
+- ✅ Task 1: <description>
+- ✅ Task 2: <description>
 
 ### Pending
-- ⬜ Step 3: <description> ← Next
-- ⬜ Step 4: <description>
-
-### Summary
-<Brief summary from requirements.md if available>
+- ⬜ Task 3: <description> ← Next
+- ⬜ Task 4: <description>
 ```
 
 ### 5. Offer Actions
@@ -76,4 +75,4 @@ What would you like to do?
 
 - This is a quick status check, not a full resume
 - Use `/devflows:resume` to actually continue work
-- Progress is determined by step status in plan.md (completed vs pending)
+- Progress is determined by task status in tasks.md (completed vs pending)

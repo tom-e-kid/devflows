@@ -39,8 +39,8 @@ For the chosen session `<branch_name>`, gather the following information. Each c
 #### a) Session files
 
 - Check if `$GIT_ROOT/.devflows/sessions/<branch_name>/` exists
-- If exists, read `requirements.md` → extract **Goal** and **Base Branch**
-- Read `plan.md` → count completed vs total steps from the Steps table
+- If exists, read `plan.md` → extract **Goal** and **Base Branch**
+- Read `tasks.md` → count completed vs total tasks from the Tasks table
 
 #### b) PR status
 
@@ -91,9 +91,9 @@ Present the status report:
 ```
 ## Session: <branch_name>
 
-- Goal: <from requirements.md, or "unknown">
-- Base branch: <from requirements.md, or "unknown">
-- Progress: <X/Y steps completed, or "unknown">
+- Goal: <from plan.md, or "unknown">
+- Base branch: <from plan.md, or "unknown">
+- Progress: <X/Y tasks completed, or "unknown">
 - PR: <not created / open #N (URL) / merged #N / closed #N / unknown>
 - Local branch: <exists / already deleted>
 - Unmerged commits: <N commits ahead of base / clean / N/A>
@@ -161,9 +161,9 @@ If `.devflows/sessions/` is empty or doesn't exist, report and stop. Nothing to 
 
 If the session directory for the selected branch doesn't exist but the branch name was listed (race condition or manual deletion), skip file deletion and note "already absent" in the report. Continue with branch cleanup.
 
-### requirements.md Missing
+### plan.md Missing
 
-If `requirements.md` doesn't exist within the session directory, report base branch as "unknown". When it's time to switch branches, ask user which branch to switch to.
+If `plan.md` doesn't exist within the session directory, report base branch as "unknown". When it's time to switch branches, ask user which branch to switch to.
 
 ### Local Branch Already Deleted
 
@@ -171,7 +171,7 @@ Skip branch deletion. Report "already absent".
 
 ### Currently on Target Branch
 
-Must switch to another branch before deleting. Use base branch from `requirements.md`, or ask user.
+Must switch to another branch before deleting. Use base branch from `plan.md`, or ask user.
 
 ### Uncommitted Changes
 

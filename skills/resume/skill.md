@@ -50,17 +50,17 @@ ls -1 $GIT_ROOT/.devflows/sessions/
 
 For each session directory `<branch_name>`:
 
-**Goal** — read from `requirements.md`:
+**Goal** — read from `plan.md`:
 ```bash
 # Extract first non-empty line after ## Goal
 ```
-If `requirements.md` doesn't exist or has no goal, show "unknown".
+If `plan.md` doesn't exist or has no goal, show "unknown".
 
-**Progress** — read from `plan.md`:
+**Progress** — read from `tasks.md`:
 ```bash
-# Count completed vs total steps from the Steps table
+# Count completed vs total tasks from the Tasks table
 ```
-If `plan.md` doesn't exist, show "unknown".
+If `tasks.md` doesn't exist, show "unknown".
 
 #### Present List
 
@@ -71,8 +71,8 @@ Display sessions with their info:
 
 | # | Branch | Goal | Progress |
 |---|--------|------|----------|
-| 1 | feature/dark-mode | Add dark mode toggle | 3/5 steps |
-| 2 | feature/auth | Implement OAuth login | 0/4 steps |
+| 1 | feature/dark-mode | Add dark mode toggle | 3/5 tasks |
+| 2 | feature/auth | Implement OAuth login | 0/4 tasks |
 ```
 
 Ask user which session to resume using `AskUserQuestion`.
@@ -128,7 +128,7 @@ If the selected session's branch doesn't exist locally or remotely:
 - Suggest `/devflows:cleanup` to remove the orphaned session files
 - Stop (don't try to resume without a branch)
 
-### requirements.md or plan.md Missing
+### plan.md or tasks.md Missing
 
 Show "unknown" for the missing info. The session can still be resumed — `feature-continue` will handle incomplete session files.
 

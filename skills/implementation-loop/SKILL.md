@@ -122,9 +122,9 @@ Commit message guidelines:
 
 ### 6. Update Progress
 
-- Mark step as `completed` in `plan.md`
-- Add entry to Progress Log with date
-- Proceed to next step
+- Mark task as `completed` in `tasks.md`
+- Add entry to Log section with date
+- Proceed to next task
 
 ---
 
@@ -221,7 +221,7 @@ The `/devflows:pr` skill will automatically run PR-level review before creating 
 
 1. Analyze the error
 2. Fix if straightforward
-3. If complex, document in `notes.md` and ask user
+3. If complex, document in `plan.md` Context section and ask user
 
 ### Review Finds Issues
 
@@ -238,8 +238,8 @@ The `/devflows:pr` skill will automatically run PR-level review before creating 
 
 ### Cannot Proceed
 
-1. Document the blocker in `notes.md`
-2. Update `plan.md` with current status
+1. Document the blocker in `plan.md` Context section
+2. Update `tasks.md` with current status
 3. Alert user with clear description of the issue
 
 ---

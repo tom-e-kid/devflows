@@ -10,7 +10,7 @@ Create a Pull Request for the completed feature.
 ## What This Skill Does
 
 Runs `/devflows:feature-pr` to:
-- Verify all steps are completed
+- Verify all tasks are completed
 - Create commit with proper message
 - Push branch and create PR
 
@@ -19,7 +19,7 @@ Runs `/devflows:feature-pr` to:
 ### 1. Run /devflows:feature-pr
 
 Execute the `/devflows:feature-pr` skill. This will:
-- Check plan.md for completion status
+- Check tasks.md for completion status
 - Stage and commit changes
 - Push to remote
 - Create PR with proper template
