@@ -122,7 +122,7 @@ After starting a session with `/devflows:start`, implement using `/devflows:loop
 
 ## Session Structure
 
-Feature state is stored in `.devflows/sessions/<branch_name>/`:
+Feature state is stored in `.devflows/sessions/<session_name>/` (branch name with `/` replaced by `-`, e.g., `feature/dark-mode` → `feature-dark-mode`):
 
 | File                 | Purpose                                         |
 | -------------------- | ----------------------------------------------- |
@@ -130,6 +130,7 @@ Feature state is stored in `.devflows/sessions/<branch_name>/`:
 | `tasks.md`           | Task list with status + progress log            |
 | `issues.md`          | Review issues (append-only)                     |
 | `build_baseline.log` | Initial build warnings                          |
+| `.branch`            | Actual git branch name (for reverse mapping)    |
 
 ### Recovery Paths
 
@@ -137,7 +138,7 @@ Feature state is stored in `.devflows/sessions/<branch_name>/`:
 |-----------|--------|
 | Build fails during implementation | Fix in current session, retry |
 | Need to revise plan | Edit `plan.md` and `tasks.md` directly, or use `/devflows:memo` |
-| Abandon feature | Delete `.devflows/sessions/<branch>/`, delete branch |
+| Abandon feature | Delete `.devflows/sessions/<session_name>/`, delete branch |
 
 ## Code Review
 

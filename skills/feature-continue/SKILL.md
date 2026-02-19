@@ -1,6 +1,6 @@
 ---
 name: feature-continue
-description: Resume work on an existing feature. Auto-detects when .devflows/sessions/<branch>/ exists. Reads saved state and continues from last progress.
+description: Resume work on an existing feature. Auto-detects when session directory exists. Reads saved state and continues from last progress.
 ---
 
 # feature-continue
@@ -10,7 +10,7 @@ Resume work on an existing feature.
 ## Auto-detection
 
 This skill can be triggered automatically on session start when:
-- Current branch has `.devflows/sessions/<current_branch>/` directory at git root
+- Current branch has a session directory in `.devflows/sessions/` at git root (branch name with `/` replaced by `-`)
 
 ## Procedure
 
@@ -20,6 +20,9 @@ This skill can be triggered automatically on session start when:
 
 ```bash
 GIT_ROOT=$(git rev-parse --show-toplevel)
+BRANCH=$(git branch --show-current)
+SESSION_NAME="${BRANCH//\//-}"
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
 ```
 
 All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
@@ -32,10 +35,10 @@ Use Task tool to spawn 4 subagents **in a single message** (parallel execution):
 
 | Agent | Type | Task |
 |-------|------|------|
-| 1 | Bash | `gh pr list --head <branch_name> --state all --json number,state,reviewDecision,url` |
-| 2 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/plan.md` |
-| 3 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/tasks.md` |
-| 4 | Bash | `cat $GIT_ROOT/.devflows/sessions/<branch>/build_baseline.log` |
+| 1 | Bash | `gh pr list --head $BRANCH --state all --json number,state,reviewDecision,url` |
+| 2 | Bash | `cat $SESSION_DIR/plan.md` |
+| 3 | Bash | `cat $SESSION_DIR/tasks.md` |
+| 4 | Bash | `cat $SESSION_DIR/build_baseline.log` |
 
 Wait for all agents to complete, then process results.
 
@@ -48,7 +51,7 @@ Based on Agent 1 result:
 | No PR | Continue to step 3 |
 | open (pending review) | Report "PR pending review", ask if user wants to continue work |
 | open (approved) | Report "PR approved, ready to merge" |
-| merged | Report "PR merged", offer to cleanup `.devflows/sessions/<branch>/` |
+| merged | Report "PR merged", offer to cleanup `.devflows/sessions/$SESSION_NAME/` |
 | closed | Report and discuss with user |
 
 If PR is merged, skip to cleanup flow instead of resuming development.

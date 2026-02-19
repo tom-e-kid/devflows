@@ -22,7 +22,8 @@ fi
 
 # Resolve git root for .devflows directory (monorepo support)
 GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
-SESSION_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH"
+SESSION_NAME="${BRANCH//\//-}"
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
 
 echo "<session-status>"
 echo "BRANCH: $BRANCH"

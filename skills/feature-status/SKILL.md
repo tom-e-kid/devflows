@@ -10,7 +10,7 @@ Check the current status of a feature branch and determine next actions.
 ## Behavior
 
 1. Get current branch name
-2. Check if `.devflows/sessions/<branch>/` exists
+2. Check if `.devflows/sessions/<session_name>/` exists (branch name with `/` replaced by `-`)
 3. Check PR status using `gh` command
 4. Report status and suggest next action
 
@@ -47,12 +47,12 @@ Format:
 <what to do next>
 
 ### Cleanup
-<if merged: remind about .devflows/sessions/<branch>/ deletion>
+<if merged: remind about .devflows/sessions/<session_name>/ deletion>
 ```
 
 ## Integration with feature-continue
 
-When `feature-continue` detects `.devflows/sessions/<branch>/` exists:
+When `feature-continue` detects a session directory exists for the current branch:
 1. First run feature-status check
 2. If PR merged → Ask user if they want to cleanup
 3. If PR pending/approved → Report status, ask if they want to continue work
@@ -79,7 +79,7 @@ PR is ready to merge. After merging, run `/devflows:feature-status` again to cle
 
 ### Suggested Action
 PR has been merged. You can delete the feature documentation:
-- `.devflows/sessions/feature-fix-login-bug/`
+- `.devflows/sessions/feature-fix-login-bug/` (from branch `feature/fix-login-bug`)
 
 Would you like me to delete these files?
 ```

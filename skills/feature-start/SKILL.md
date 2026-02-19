@@ -12,7 +12,7 @@ Start a new feature session. Creates a feature branch, initializes session files
 1. Checks for existing session on the current branch
 2. Gathers context from the conversation (plan, goal, or asks user)
 3. Determines base branch and creates a feature branch
-4. Creates `.devflows/sessions/<branch>/` with session files
+4. Creates `.devflows/sessions/<session_name>/` with session files (branch `/` replaced with `-`)
 5. Detects platform and runs baseline build
 6. Reports readiness — user decides next step
 
@@ -36,9 +36,10 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ```bash
 CURRENT_BRANCH=$(git branch --show-current)
+SESSION_NAME="${CURRENT_BRANCH//\//-}"
 ```
 
-Check if `$GIT_ROOT/.devflows/sessions/$CURRENT_BRANCH/` exists.
+Check if `$GIT_ROOT/.devflows/sessions/$SESSION_NAME/` exists.
 
 - If **exists** → Report that a session already exists on this branch. Offer:
   - Resume with `/devflows:resume`
@@ -111,7 +112,23 @@ git checkout -b <feature_branch> origin/<base_branch>
 
 ### 6. Create Session Directory
 
-Create `$GIT_ROOT/.devflows/sessions/<branch_name>/` directory with:
+**IMPORTANT: Sanitize branch name for directory path** — replace all `/` with `-` to avoid nested directories.
+
+```bash
+SESSION_NAME="${BRANCH_NAME//\//-}"
+```
+
+For example, `feature/dark-mode` becomes `feature-dark-mode`.
+
+Create `$GIT_ROOT/.devflows/sessions/$SESSION_NAME/` directory with:
+
+**`.branch`** (actual branch name for reverse mapping)
+
+```
+<actual_branch_name>
+```
+
+This file stores the real git branch name (e.g., `feature/dark-mode`) so that other skills can map the session directory back to the correct branch.
 
 **plan.md**
 
@@ -193,12 +210,12 @@ Run a clean build to establish the baseline:
 
 **iOS**:
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest --save-baseline $GIT_ROOT/.devflows/sessions/$SESSION_NAME/build_baseline.log
 ```
 
 **Web**:
 ```bash
-${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/<branch_name>/build_baseline.log
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/$SESSION_NAME/build_baseline.log
 ```
 
 Update `plan.md` Context section with baseline warning count and `tasks.md` Log with build result.
@@ -213,7 +230,7 @@ If build fails, report the error and ask user how to proceed.
 ## Session Started
 
 - Branch: <branch_name> (from <base_branch>)
-- Session: .devflows/sessions/<branch_name>/
+- Session: .devflows/sessions/<session_name>/
 - Build baseline: <OK (warnings: N) / skipped / failed>
 - Tasks: <N tasks defined / no tasks yet>
 

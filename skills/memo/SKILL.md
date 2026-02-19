@@ -21,7 +21,8 @@ Save the current conversation context to session files. Safe to run multiple tim
 ```bash
 GIT_ROOT=$(git rev-parse --show-toplevel)
 BRANCH=$(git branch --show-current)
-SESSION_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH"
+SESSION_NAME="${BRANCH//\//-}"
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
 ```
 
 ### 1. Check Session Exists

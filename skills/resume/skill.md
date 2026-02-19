@@ -30,7 +30,11 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 CURRENT_BRANCH=$(git branch --show-current)
 ```
 
-Check if `$GIT_ROOT/.devflows/sessions/$CURRENT_BRANCH/` exists.
+```bash
+SESSION_NAME="${CURRENT_BRANCH//\//-}"
+```
+
+Check if `$GIT_ROOT/.devflows/sessions/$SESSION_NAME/` exists.
 
 - If **exists** → Mode A. Skip to step 3.
 - If **not exists** → Mode B. Continue to step 2.
@@ -48,7 +52,15 @@ ls -1 $GIT_ROOT/.devflows/sessions/
 
 #### Gather Brief Info
 
-For each session directory `<branch_name>`:
+For each session directory `<session_name>`:
+
+**Branch name** — read from `.branch` file:
+```bash
+# Read actual branch name from .branch file
+BRANCH_NAME=$(cat $GIT_ROOT/.devflows/sessions/<session_name>/.branch 2>/dev/null || echo "<session_name>")
+```
+
+If `.branch` file doesn't exist (older sessions), fall back to using the directory name as the branch name.
 
 **Goal** — read from `plan.md`:
 ```bash
@@ -64,7 +76,7 @@ If `tasks.md` doesn't exist, show "unknown".
 
 #### Present List
 
-Display sessions with their info:
+Display sessions with their info (use the actual branch name from `.branch` file):
 
 ```
 ## Available Sessions
@@ -79,10 +91,10 @@ Ask user which session to resume using `AskUserQuestion`.
 
 #### Switch to Selected Branch
 
-After user selects a session:
+After user selects a session, use the actual branch name (from `.branch` file) to switch:
 
 ```bash
-git checkout <selected_branch>
+git checkout <actual_branch_name>
 ```
 
 If checkout fails (branch doesn't exist locally):

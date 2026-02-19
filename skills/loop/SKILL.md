@@ -20,7 +20,8 @@ Smart entry point for implementation. Detects session state and proceeds accordi
 ```bash
 GIT_ROOT=$(git rev-parse --show-toplevel)
 BRANCH=$(git branch --show-current)
-SESSION_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH"
+SESSION_NAME="${BRANCH//\//-}"
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
 ```
 
 ### 1. Detect State
