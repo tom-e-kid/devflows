@@ -196,7 +196,7 @@ $GIT_ROOT/.devflows/
 │   └── issue.md            # Issue body format (per-type sections inside)
 ├── build/
 │   └── config.sh           # Platform build config (gitignored)
-└── sessions/<branch>/      # Session state (gitignored)
+└── sessions/<session_name>/ # Session state (gitignored, branch "/" → "-")
 ```
 
 | Template | Purpose |
@@ -208,10 +208,11 @@ Templates are optional. If not present, built-in defaults are used.
 
 ## Feature Documentation
 
-During development, feature state is stored in `.devflows/sessions/<branch>/`:
+During development, feature state is stored in `.devflows/sessions/<session_name>/` where `<session_name>` is the branch name with `/` replaced by `-` (e.g., `feature/dark-mode` → `feature-dark-mode`):
 
 | File | Purpose |
 |------|---------|
+| `.branch` | Actual git branch name (for reverse mapping) |
 | `plan.md` | Goal, base branch, context, approach |
 | `tasks.md` | Task list with status + progress log |
 | `issues.md` | Review issues (append-only, tracked until PR merge) |

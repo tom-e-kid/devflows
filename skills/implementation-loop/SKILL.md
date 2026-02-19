@@ -227,7 +227,7 @@ The `/devflows:pr` skill will automatically run PR-level review before creating 
 
 **NEVER auto-fix.** Follow this flow:
 
-1. Record issues in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md` (append)
+1. Record issues in the current session's `issues.md` (append)
 2. Report issues to user with clear table format
 3. Wait for user decision:
    - "fix #1" → Fix specific issue

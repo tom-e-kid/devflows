@@ -41,9 +41,9 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ### issues.md
 
-All detected issues are recorded in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md`.
+All detected issues are recorded in the current session's `issues.md`.
 
-**Location:** `$GIT_ROOT/.devflows/sessions/<current_branch>/issues.md`
+**Location:** Resolve session directory with `SESSION_NAME="${BRANCH//\//-}"`, then `$GIT_ROOT/.devflows/sessions/$SESSION_NAME/issues.md`
 
 **Rules:**
 - **APPEND only** - never overwrite existing entries
@@ -101,7 +101,7 @@ Display issues clearly:
 | 1 | high | `file.swift:42` | Hardcoded API key detected |
 | 2 | medium | `api.ts:15` | Missing error handling |
 
-These issues have been recorded in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md`.
+These issues have been recorded in the session's `issues.md`.
 
 **What would you like to do?**
 - Tell me which issues to fix (e.g., "fix #1 and #2")

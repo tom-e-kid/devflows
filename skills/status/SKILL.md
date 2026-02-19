@@ -25,7 +25,8 @@ BRANCH=$(git branch --show-current)
 ### 2. Check for Session
 
 ```bash
-SESSION_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH"
+SESSION_NAME="${BRANCH//\//-}"
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
 ```
 
 If session directory doesn't exist, display:

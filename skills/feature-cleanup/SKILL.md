@@ -34,18 +34,28 @@ ls -1 $GIT_ROOT/.devflows/sessions/
 
 ### 2. Gather Status for Selected Session
 
-For the chosen session `<branch_name>`, gather the following information. Each check may fail (missing files, missing branch, no remote) — that's fine. Record what you can and mark the rest as unknown/absent.
+For the chosen session `<session_name>`, first read the actual branch name:
+
+```bash
+BRANCH_NAME=$(cat $GIT_ROOT/.devflows/sessions/<session_name>/.branch 2>/dev/null || echo "<session_name>")
+```
+
+If `.branch` file doesn't exist (older sessions), fall back to using the directory name as the branch name.
+
+Gather the following information. Each check may fail (missing files, missing branch, no remote) — that's fine. Record what you can and mark the rest as unknown/absent.
 
 #### a) Session files
 
-- Check if `$GIT_ROOT/.devflows/sessions/<branch_name>/` exists
+- Check if `$GIT_ROOT/.devflows/sessions/<session_name>/` exists
 - If exists, read `plan.md` → extract **Goal** and **Base Branch**
 - Read `tasks.md` → count completed vs total tasks from the Tasks table
 
 #### b) PR status
 
+Use the actual branch name (from `.branch` file) for git and GitHub operations:
+
 ```bash
-gh pr list --head <branch_name> --state all --json number,url,state,mergedAt
+gh pr list --head $BRANCH_NAME --state all --json number,url,state,mergedAt
 ```
 
 Determine one of:
@@ -59,7 +69,7 @@ If `gh` is not available or no remote exists, skip and note "PR status: unknown 
 #### c) Local branch
 
 ```bash
-git branch --list <branch_name>
+git branch --list "$BRANCH_NAME"
 ```
 
 - **Exists** — branch is present locally
@@ -68,7 +78,7 @@ git branch --list <branch_name>
 If the branch exists and a base branch is known, check for unmerged local changes:
 
 ```bash
-git log --oneline <base_branch>..<branch_name>
+git log --oneline <base_branch>..$BRANCH_NAME
 ```
 
 Report the number of commits that haven't been merged into the base branch (0 = clean, N = has unmerged work).
@@ -78,7 +88,7 @@ Report the number of commits that haven't been merged into the base branch (0 = 
 Check if the remote tracking branch still exists (read-only):
 
 ```bash
-git branch -r --list origin/<branch_name>
+git branch -r --list "origin/$BRANCH_NAME"
 ```
 
 - **Exists** — remote branch is still present
@@ -86,10 +96,10 @@ git branch -r --list origin/<branch_name>
 
 ### 3. Report Status & Confirm
 
-Present the status report:
+Present the status report (use actual branch name from `.branch` file):
 
 ```
-## Session: <branch_name>
+## Session: <actual_branch_name>
 
 - Goal: <from plan.md, or "unknown">
 - Base branch: <from plan.md, or "unknown">
@@ -115,15 +125,15 @@ Only operate on what actually exists. Track what was done for the final report.
 
 **Step 1: Delete session files**
 
-If `$GIT_ROOT/.devflows/sessions/<branch_name>/` exists:
+If `$GIT_ROOT/.devflows/sessions/<session_name>/` exists:
 
 ```bash
-rm -rf $GIT_ROOT/.devflows/sessions/<branch_name>/
+rm -rf $GIT_ROOT/.devflows/sessions/<session_name>/
 ```
 
 **Step 2: Switch branch (if needed)**
 
-If currently on `<branch_name>`:
+If currently on `$BRANCH_NAME`:
 - If base branch is known → `git checkout <base_branch>`
 - If base branch is unknown → ask user which branch to switch to using `AskUserQuestion`
 
@@ -132,12 +142,12 @@ If currently on `<branch_name>`:
 If the local branch exists:
 
 ```bash
-git branch -d <branch_name>
+git branch -d "$BRANCH_NAME"
 ```
 
 If this fails (branch not fully merged):
 1. Report the warning
-2. Ask user if they want to force delete with `git branch -D <branch_name>`
+2. Ask user if they want to force delete with `git branch -D "$BRANCH_NAME"`
 
 ### 5. Report Completion
 
@@ -146,8 +156,8 @@ Report exactly what was done:
 ```
 ## Cleanup Complete
 
-- Session files: <deleted / already absent>
-- Local branch: <deleted / force deleted / already absent>
+- Session files: <deleted / already absent> (.devflows/sessions/<session_name>/)
+- Local branch: <deleted / force deleted / already absent> (<actual_branch_name>)
 - Switched to: <base_branch>
 ```
 
@@ -177,7 +187,7 @@ Must switch to another branch before deleting. Use base branch from `plan.md`, o
 
 If there are uncommitted changes in the working tree:
 1. Report what files are modified
-2. **IMPORTANT**: Only `.devflows/sessions/<branch_name>/` is a cleanup target. Other files are NOT cleanup targets and should NOT be discarded.
+2. **IMPORTANT**: Only `.devflows/sessions/<session_name>/` is a cleanup target. Other files are NOT cleanup targets and should NOT be discarded.
 3. Ask user how to proceed:
    - Stash changes
    - Abort cleanup (recommended if unsure)

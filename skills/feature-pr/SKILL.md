@@ -28,7 +28,14 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ### 1. Verify Completion
 
-Check `$GIT_ROOT/.devflows/sessions/<current_branch>/tasks.md`:
+Resolve session directory:
+```bash
+BRANCH=$(git branch --show-current)
+SESSION_NAME="${BRANCH//\//-}"
+SESSION_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
+```
+
+Check `$SESSION_DIR/tasks.md`:
 - All tasks should be marked as completed
 - If not → Report and ask user how to proceed
 
@@ -57,7 +64,7 @@ Run comprehensive review before creating PR. Use the `review` skill at PR level:
 
 **If issues found:**
 
-1. Record in `$GIT_ROOT/.devflows/sessions/<branch>/issues.md` (append)
+1. Record in `$SESSION_DIR/issues.md` (append)
 2. Report to user - **NEVER auto-fix**
 3. Wait for user decision before proceeding
 
@@ -130,7 +137,7 @@ No remote repository configured. Will merge locally:
 1. Switch to `<base_branch>`
 2. Merge `<branch_name>`
 3. Delete feature branch
-4. Delete `$GIT_ROOT/.devflows/sessions/<branch_name>/`
+4. Delete `$SESSION_DIR/`
 
 Proceed?
 ```
@@ -148,7 +155,7 @@ git merge <branch_name>
 git branch -d <branch_name>
 
 # Delete feature documentation
-rm -rf $GIT_ROOT/.devflows/sessions/<branch_name>/
+rm -rf $SESSION_DIR/
 ```
 
 #### Handle Merge Conflicts
@@ -172,7 +179,7 @@ If `git branch -d` fails (branch not fully merged):
 
 - Merged: `<branch_name>` → `<base_branch>`
 - Deleted branch: `<branch_name>`
-- Deleted: `$GIT_ROOT/.devflows/sessions/<branch_name>/`
+- Deleted: `$SESSION_DIR/`
 
 Ready for next feature!
 ```
@@ -226,7 +233,7 @@ EOF
 Report to user:
 - PR URL
 - Summary of changes
-- Reminder about `$GIT_ROOT/.devflows/sessions/<branch_name>/` cleanup (separate instruction)
+- Reminder about `$SESSION_DIR/` cleanup (separate instruction)
 
 ## Flow Overview
 
@@ -263,6 +270,6 @@ no remote   has remote
 - Base branch is recorded in `plan.md`
 - Follow project conventions for PR language (check CLAUDE.md or $GIT_ROOT/.devflows/templates/pr.md)
 - Write clearly so beginners can understand
-- For PR flow: Do NOT automatically delete `$GIT_ROOT/.devflows/sessions/<branch_name>/` - wait for user instruction
+- For PR flow: Do NOT automatically delete `$SESSION_DIR/` - wait for user instruction
 - For local merge flow: Session cleanup is included in the flow
 - Build verification is handled by `/devflows:implementation-loop`, not this skill

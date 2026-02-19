@@ -21,8 +21,9 @@ CONFIG_FILE="$GIT_ROOT/.devflows/build/config.sh"
 
 # Determine feature directory from current branch
 BRANCH_NAME=$(git branch --show-current 2>/dev/null || echo "")
-if [[ -n "$BRANCH_NAME" && -d "$GIT_ROOT/.devflows/sessions/$BRANCH_NAME" ]]; then
-    FEATURE_DIR="$GIT_ROOT/.devflows/sessions/$BRANCH_NAME"
+SESSION_NAME="${BRANCH_NAME//\//-}"
+if [[ -n "$SESSION_NAME" && -d "$GIT_ROOT/.devflows/sessions/$SESSION_NAME" ]]; then
+    FEATURE_DIR="$GIT_ROOT/.devflows/sessions/$SESSION_NAME"
 else
     FEATURE_DIR="$GIT_ROOT/.devflows/build"
 fi
