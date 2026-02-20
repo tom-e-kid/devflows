@@ -1,6 +1,6 @@
 ---
 name: implementation-loop
-description: Step execution cycle for feature development. Implement → Review → Format → Build → Update Progress.
+description: This skill should be used when implementing features step-by-step, executing tasks from a plan, or when the loop skill hands off to the implementation cycle. Covers the Implement → Review → Format → Build → Commit → Update Progress workflow.
 ---
 
 # implementation-loop
@@ -66,7 +66,7 @@ Run quick review on the changes just made. Use the `review` skill at step level:
 - [ ] No unused imports/variables just added
 - [ ] Code follows existing patterns in the file
 
-Skip detailed review if confident in the change. Save thorough review for loop-level.
+Skip detailed review for high-confidence changes. Save thorough review for loop-level.
 
 ### 3. Format (REQUIRED before commit)
 
