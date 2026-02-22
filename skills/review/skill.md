@@ -37,6 +37,19 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 ---
 
+## Pre-Phase: External Review Validation
+
+Before running the review checklist, check for external review results:
+
+1. Resolve session directory
+2. If `$SESSION_DIR/review.md` exists:
+   - Run the `validate-review` skill first
+   - After validation completes, proceed with the standard review below
+3. If `$SESSION_DIR/review.md` does not exist:
+   - Skip directly to the standard review
+
+---
+
 ## Issue Management
 
 ### issues.md
