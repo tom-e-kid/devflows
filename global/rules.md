@@ -101,6 +101,7 @@ devflows integrates with Claude Code's standard plan mode.
 | `/devflows:resume` | Resume existing session |
 | `/devflows:status` | Show implementation progress |
 | `/devflows:pr` | Create PR with format |
+| `/devflows:validate-review` | Validate external AI review results |
 
 ### Auto-Detection
 
@@ -129,6 +130,7 @@ Feature state is stored in `.devflows/sessions/<session_name>/` (branch name wit
 | `plan.md`            | Goal, base branch, context, approach            |
 | `tasks.md`           | Task list with status + progress log            |
 | `issues.md`          | Review issues (append-only)                     |
+| `review.md`          | External AI review results (validated by validate-review) |
 | `build_baseline.log` | Initial build warnings                          |
 | `.branch`            | Actual git branch name (for reverse mapping)    |
 
