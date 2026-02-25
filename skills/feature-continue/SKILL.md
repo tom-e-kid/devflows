@@ -31,14 +31,13 @@ All `.devflows/` paths below should be prefixed with `$GIT_ROOT/`.
 
 **IMPORTANT: Run PR check and file reads in parallel using subagents for efficiency.**
 
-Use Task tool to spawn 4 subagents **in a single message** (parallel execution):
+Use Task tool to spawn 3 subagents **in a single message** (parallel execution):
 
 | Agent | Type | Task |
 |-------|------|------|
 | 1 | Bash | `gh pr list --head $BRANCH --state all --json number,state,reviewDecision,url` |
 | 2 | Bash | `cat $SESSION_DIR/plan.md` |
 | 3 | Bash | `cat $SESSION_DIR/tasks.md` |
-| 4 | Bash | `cat $SESSION_DIR/build_baseline.log` |
 
 Wait for all agents to complete, then process results.
 
@@ -58,7 +57,7 @@ If PR is merged, skip to cleanup flow instead of resuming development.
 
 ### 3. Summarize Status to User
 
-Use Agents 2-4 results to understand the feature:
+Use Agents 2-3 results to understand the feature:
 
 Report:
 - What the feature is about (from `plan.md` Goal)
@@ -94,8 +93,7 @@ $BUILD_CMD_LATEST
 ```
 
 - If build fails → Report and investigate
-- Compare warnings with `build_baseline.log`
-- If warnings increased → Report to user
+- If build passes → Continue
 
 ### 5. Continue Work
 

@@ -73,7 +73,7 @@ devflows ensures quality and traceability in feature development:
 1. **Start with a session** - Use `/devflows:start` to create a trackable session
 2. **Track progress** - Session files record state; resume anytime
 3. **Review every step** - Each implementation step includes review & refactor
-4. **Build accountability** - Compare before/after builds; fix regressions
+4. **Build accountability** - Verify builds pass; fix errors
 5. **Format consistently** - Platform-specific formatting before commit
 6. **Structured PRs** - Follow project PR format conventions
 
@@ -84,7 +84,7 @@ devflows integrates with Claude Code's standard plan mode.
 ### Flow
 
 ```
-1. User runs /devflows:start → creates branch, session, baseline
+1. User runs /devflows:start → creates branch, session, platform detection
 2. Planning (optional) → plan mode or direct implementation
 3. Implementation (with implementation-loop) → /devflows:pr
 ```
@@ -93,7 +93,7 @@ devflows integrates with Claude Code's standard plan mode.
 
 | Command | Purpose |
 |---------|---------|
-| `/devflows:start` | Start a new feature session (branch + session + baseline) |
+| `/devflows:start` | Start a new feature session (branch + session + platform detection) |
 | `/devflows:memo` | Save conversation context (goals, decisions, tasks) to session files |
 | `/devflows:loop` | Start implementing — picks up from current session state |
 | `/devflows:issue` | Create a GitHub Issue from the current discussion |
@@ -131,7 +131,6 @@ Feature state is stored in `.devflows/sessions/<session_name>/` (branch name wit
 | `tasks.md`           | Task list with status + progress log            |
 | `issues.md`          | Review issues (append-only)                     |
 | `review.md`          | External AI review results (validated by validate-review) |
-| `build_baseline.log` | Initial build warnings                          |
 | `.branch`            | Actual git branch name (for reverse mapping)    |
 
 ### Recovery Paths

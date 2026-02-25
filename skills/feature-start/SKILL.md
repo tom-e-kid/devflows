@@ -1,11 +1,11 @@
 ---
 name: feature-start
-description: Start a new feature session. Creates branch, session directory, and runs baseline build. Works with or without a prior plan.
+description: Start a new feature session. Creates branch, session directory, and detects platform. Works with or without a prior plan.
 ---
 
 # feature-start
 
-Start a new feature session. Creates a feature branch, initializes session files, and runs a baseline build.
+Start a new feature session. Creates a feature branch, initializes session files, and detects the build platform.
 
 ## What This Skill Does
 
@@ -13,7 +13,7 @@ Start a new feature session. Creates a feature branch, initializes session files
 2. Gathers context from the conversation (plan, goal, or asks user)
 3. Determines base branch and creates a feature branch
 4. Creates `.devflows/sessions/<session_name>/` with session files (branch `/` replaced with `-`)
-5. Detects platform and runs baseline build
+5. Detects platform for build configuration
 6. Reports readiness — user decides next step
 
 ## Prerequisites
@@ -195,43 +195,25 @@ No tasks defined yet. Use `/devflows:memo` to capture tasks from the conversatio
 
 Check if `$GIT_ROOT/.devflows/build/config.sh` exists.
 
-- If **exists** → source it and proceed to baseline build
+- If **exists** → source it (platform already configured)
 - If **not exists** → detect project type:
 
 | Project Indicator | Platform Skill |
 |-------------------|----------------|
 | `*.xcworkspace` or `*.xcodeproj` | ios-dev |
 | `package.json` | web-dev |
-| None detected | Skip build baseline |
+| None detected | Skip platform configuration |
 
-### 8. Initial Build & Baseline
+Build will be verified during implementation (via `/devflows:loop`).
 
-Run a clean build to establish the baseline:
-
-**iOS**:
-```bash
-${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest --save-baseline $GIT_ROOT/.devflows/sessions/$SESSION_NAME/build_baseline.log
-```
-
-**Web**:
-```bash
-${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh --save-baseline $GIT_ROOT/.devflows/sessions/$SESSION_NAME/build_baseline.log
-```
-
-Update `plan.md` Context section with baseline warning count and `tasks.md` Log with build result.
-
-If no platform detected, skip and note in `plan.md` Context: "No build baseline (no platform detected)".
-
-If build fails, report the error and ask user how to proceed.
-
-### 9. Report Completion
+### 8. Report Completion
 
 ```
 ## Session Started
 
 - Branch: <branch_name> (from <base_branch>)
 - Session: .devflows/sessions/<session_name>/
-- Build baseline: <OK (warnings: N) / skipped / failed>
+- Platform: <iOS / Web / none detected>
 - Tasks: <N tasks defined / no tasks yet>
 
 ### Next Steps
@@ -249,6 +231,5 @@ If build fails, report the error and ask user how to proceed.
 
 - This skill works with or without a prior plan — session files are useful either way
 - If user later creates a plan, they can use `/devflows:memo` to update plan.md and tasks.md
-- Build baseline can be re-run later via platform skills if skipped initially
 - Documentation should follow project language conventions (check CLAUDE.md)
 - Always copy the full plan content into plan.md (do not reference external files)

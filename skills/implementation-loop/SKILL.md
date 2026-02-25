@@ -102,8 +102,7 @@ ${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh
 | Result | Action |
 |--------|--------|
 | Build error | Fix immediately |
-| New warnings | Compare with `build_baseline.log`, fix or escalate |
-| No issues | Continue |
+| No errors | Continue |
 | Cannot fix | Stop and alert user |
 
 ### 5. Commit
@@ -157,29 +156,17 @@ If code can be simplified, use Task tool with subagent_type="code-simplifier"
 
 ### 2. Final Build Verification (Clean Build)
 
-**IMPORTANT: Run builds in parallel using subagents for efficiency.**
+Run a single clean build to verify everything compiles.
 
-**iOS** (parallel):
+**iOS**:
+```bash
+${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest
+```
 
-Use Task tool to spawn 2 Bash subagents **in a single message** (parallel execution):
-
-| Agent | Description | Command |
-|-------|-------------|---------|
-| 1 | iOS latest build | `${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh latest` |
-| 2 | iOS minimum build | `${CLAUDE_PLUGIN_ROOT}/skills/ios-dev/scripts/ios-build.sh minimum` |
-
-Skip Agent 2 if `MINIMUM_OS` is not configured in `config.sh`.
-
-**Web** (parallel):
-
-Use Task tool to spawn 2 Bash subagents **in a single message** (parallel execution):
-
-| Agent | Description | Command |
-|-------|-------------|---------|
-| 1 | Web build | `${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh` |
-| 2 | Web verify | `${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-verify.sh` |
-
-Wait for both agents to complete, then aggregate results.
+**Web**:
+```bash
+${CLAUDE_PLUGIN_ROOT}/skills/web-dev/scripts/web-build.sh
+```
 
 ### 3. Request User Review
 
@@ -249,5 +236,5 @@ The `/devflows:pr` skill will automatically run PR-level review before creating 
 - Never proceed to next step if current step has build errors
 - Step reviews should be fast - thoroughness comes at loop level
 - Use incremental builds during development for speed (iOS)
-- Use clean builds for baseline and final verification
+- Use clean builds for final verification
 - Keep the cycle tight: implement small, verify often

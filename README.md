@@ -16,7 +16,7 @@ devflows ensures quality and traceability in feature development:
 1. **Start with a session** - Use `/devflows:start` to create a trackable session
 2. **Track progress** - Session files record state; resume anytime
 3. **Review every step** - Each implementation step includes review & refactor
-4. **Build accountability** - Compare before/after builds; fix regressions
+4. **Build accountability** - Verify builds pass; fix errors
 5. **Format consistently** - Platform-specific formatting before commit
 6. **Structured PRs** - Follow project PR format conventions
 
@@ -96,7 +96,7 @@ devflows integrates with Claude Code's standard plan mode.
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    /devflows:start                                │
-│  Create branch → Session directory → Baseline build              │
+│  Create branch → Session directory → Platform detection           │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -135,7 +135,7 @@ All commands are invoked as `/devflows:<command>`.
 | Command | Purpose |
 |---------|---------|
 | `/devflows:init` | Initialize `.devflows/` directory with templates and build config for your project |
-| `/devflows:start` | Start a new feature session — creates branch, session directory, and runs baseline build |
+| `/devflows:start` | Start a new feature session — creates branch, session directory, and detects platform |
 
 ### Development
 
@@ -216,7 +216,6 @@ During development, feature state is stored in `.devflows/sessions/<session_name
 | `plan.md` | Goal, base branch, context, approach |
 | `tasks.md` | Task list with status + progress log |
 | `issues.md` | Review issues (append-only, tracked until PR merge) |
-| `build_baseline.log` | Initial warning count |
 
 ## How It Works
 
