@@ -131,13 +131,21 @@ If `$GIT_ROOT/.devflows/sessions/<session_name>/` exists:
 rm -rf $GIT_ROOT/.devflows/sessions/<session_name>/
 ```
 
-**Step 2: Switch branch (if needed)**
+**Step 2: Remove WIP Task Entry**
+
+Remove the corresponding entry from `DB/wip/tasks.md`.
+
+Look for and delete the line containing `(branch: $BRANCH_NAME)` from the file.
+
+If `DB/wip/tasks.md` does not exist or no matching line is found, skip silently.
+
+**Step 3: Switch branch (if needed)**
 
 If currently on `$BRANCH_NAME`:
 - If base branch is known → `git checkout <base_branch>`
 - If base branch is unknown → ask user which branch to switch to using `AskUserQuestion`
 
-**Step 3: Delete local branch**
+**Step 4: Delete local branch**
 
 If the local branch exists:
 

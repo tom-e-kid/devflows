@@ -206,7 +206,26 @@ Check if `$GIT_ROOT/.devflows/build/config.sh` exists.
 
 Build will be verified during implementation (via `/devflows:loop`).
 
-### 8. Report Completion
+### 8. Register WIP Task
+
+Add an entry to `DB/wip/tasks.md` to track this work-in-progress.
+
+Derive the project identifier from the git remote URL or repository path relative to `SRCROOT`. Strip the hosting prefix (e.g., `github.com/tom-e-kid/manbo` → `tom-e-kid/manbo`).
+
+Append a line in the following format:
+
+```
+- <project_identifier>: <goal_one_liner> (branch: <branch_name>)
+```
+
+Example:
+```
+- tom-e-kid/manbo: Add dark mode support (branch: feature/dark-mode)
+```
+
+If `DB/wip/tasks.md` does not exist, skip this step silently.
+
+### 9. Report Completion
 
 ```
 ## Session Started
